@@ -3,11 +3,18 @@ import React from "react";
 import OngoingCourse from "../components/OngoingCourse";
 import CalendarProfile from "../components/Calendar";
 
+// Importing images
+import profileVector from "../assets/images/profile-vector.png";
+import maleProfile from "../assets/images/male.png";
+import femaleProfile from "../assets/images/female.png";
+import reactIcon from "../assets/icons/react.png";
+import trophyIcon from "../assets/icons/trophy.png";
+
 function Profile() {
-  const gender = "male";
+  const gender = "male";//male/female
   return (
     <div className="container flex relative left-[15%] bg-[#f0f9f0] w-[85%] min-h-screen ">
-      {/* ssection 1 */}
+      {/* section 1 */}
       <div className="border-r-[0.1px] border-gray-400 w-[72%] p-[3dvw] pt-[4vh] h-full">
         <div className="flex justify-between items-center w-[55dvw]">
           <input
@@ -22,7 +29,7 @@ function Profile() {
 
         <div className="flex w-[55dvw] h-[26dvh] bg-[#28595a] mt-[3.5dvh] rounded-3xl pr-[1dvw] box-border shadow-md shadow-amber-100">
           <img
-            src="./src/assets/images/profile-vector.png"
+            src={profileVector}
             alt=""
             className="aspect-auto h-[36vh] flex relative left-[-3dvw]"
           />
@@ -36,6 +43,7 @@ function Profile() {
             </p>
           </div>
         </div>
+
         <div className="flex justify-between items-center w-[55dvw] mt-[10dvh]">
           <div className="w-[32.5dvw] h-[30dvh] border-[1px] border-gray-300 rounded-2xl p-[1.5dvw]">
             <div className="flex justify-between items-center">
@@ -49,10 +57,12 @@ function Profile() {
             </div>
           </div>
         </div>
+
         <div className="w-[55dvw] h-[30dvh] border-[1px] border-gray-300 rounded-2xl mt-[2dvw] p-[1.5dvw]">
           Leaderboard
         </div>
       </div>
+
       {/* section 2 */}
       <div className="p-[1.5dvw] w-full h-full">
         <div className="flex justify-between items-center">
@@ -61,36 +71,28 @@ function Profile() {
         </div>
         <div className="flex flex-col h-[23dvh] w-full justify-between text-center items-center">
           <img
-            src={`${
-              gender === "male" ? "./src/assets/images/male.png" : "./src/assets/images/female.png"
-            }`}
+            src={gender === "male" ? maleProfile : femaleProfile}
             alt="Profile photo"
             className="w-[10dvw]"
           />
           <h1 className="text-[1.5dvw]">Aegon Targaryen</h1>
           <span className="text-gray-400 text-[0.8dvw]">Student</span>
         </div>
-        {/* calendar */}
-        {/* to modify will do later */}
-        <div className="w-full bg-[#e1f4e7] h-[15dvh] flex flex-col rounded-lg mt-[2dvw]">
-          <div className="p-[0.7dvw] flex justify-between ">
-            <ChevronLeft />
-            <h1 className="text-[0.9dvw]">January 2025</h1>
-            <ChevronRight />
-          </div>
-          <CalendarProfile/>
-        </div>
-        <h1 className="text-[1.2dvw] mt-[2dvh]">Ongoing Course</h1>
-        <OngoingCourse course={"React"} topic={"Learning custom hooks"} percentage={"69"} image={"./src/assets/icons/react.png"}/>
-        <OngoingCourse course={"React"} topic={"Learning custom hooks"} percentage={"69"} image={"./src/assets/icons/react.png"}/>
-        <OngoingCourse course={"React"} topic={"Learning custom hooks"} percentage={"69"} image={"./src/assets/icons/react.png"}/>
 
-        <div className="w-full h-[7dvw] bg-[#e9f1e9] rounded-lg mt-[2dvw]  flex items-center justify-between">
+        {/* calendar */}
+          <CalendarProfile />
+
+        <h1 className="text-[1.2dvw] mt-[2dvh]">Ongoing Course</h1>
+        <OngoingCourse course={"React"} topic={"Learning custom hooks"} percentage={"69"} image={reactIcon} />
+        <OngoingCourse course={"React"} topic={"Learning custom hooks"} percentage={"69"} image={reactIcon} />
+        <OngoingCourse course={"React"} topic={"Learning custom hooks"} percentage={"69"} image={reactIcon} />
+
+        <div className="w-full h-[7dvw] bg-[#e9f1e9] rounded-lg mt-[2dvw] flex items-center justify-between">
           <div className="flex flex-col items-center ml-[2dvw]">
-          <h1 className="text-[2dvw] font-bold">450</h1>
-          <span className="text-[0.7dvw] text-gray-400">Points Collected</span>
+            <h1 className="text-[2dvw] font-bold">450</h1>
+            <span className="text-[0.7dvw] text-gray-400">Points Collected</span>
           </div>
-          <img src="./src/assets/icons/trophy.png" alt="" className="h-[9.5dvw] w-[9.5/src/assetsdvw]"/>
+          <img src={trophyIcon} alt="Trophy" className="h-[9.5dvw] w-[9.5dvw]" />
         </div>
       </div>
     </div>
