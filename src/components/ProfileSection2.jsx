@@ -13,7 +13,6 @@ import trophyIcon from "../assets/icons/trophy.png";
 const ProfileSection2 = () => {
     const gender = "male";//male/female
   return (
-    <div>
       <>
               {/* section 2 */}
       <div className="p-[1.5dvw] w-full h-full">
@@ -48,7 +47,6 @@ const ProfileSection2 = () => {
         </div>
       </div>
       </>
-    </div>
   )
 }
 
