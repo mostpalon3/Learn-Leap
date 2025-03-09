@@ -1,12 +1,12 @@
-import { Calendar, ChevronLeft, ChevronRight, UserRoundPen } from "lucide-react";
-import React from 'react';import CalendarProfile from "./Calendar";
-import OngoingCourse from "./OngoingCourse";
+import { UserRoundPen } from "lucide-react";
+import React from 'react';import CalendarProfile from "../Calendar";
+import OngoingCourse from "../OngoingCourse";
 
 //icons
-import maleProfile from "../assets/images/male.png";
-import femaleProfile from "../assets/images/female.png";
-import reactIcon from "../assets/icons/react.png";
-import trophyIcon from "../assets/icons/trophy.png";
+import maleProfile from "../../assets/images/male.png";
+import femaleProfile from "../../assets/images/female.png";
+import reactIcon from "../../assets/icons/react.png";
+import trophyIcon from "../../assets/icons/trophy.png";
 
 
 
@@ -14,7 +14,7 @@ const ProfileSection2 = () => {
     const gender = "male";//male/female
   return (
       <>
-              {/* section 2 */}
+    {/* section 2 */}
       <div className="p-[1.5dvw] w-full h-full">
         <div className="flex justify-between items-center">
           <h1 className="text-bold text-[1.2dvw]">Profile</h1>
