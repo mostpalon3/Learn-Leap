@@ -3,6 +3,7 @@ import About from './pages/About'
 import Courses from './pages/Courses'
 import Profile from './pages/Profile'
 import Feed from './pages/Feed'
+import Quiz from './pages/Quiz'
 import NotFound from './pages/NotFound'
 import { Routes, Route } from 'react-router-dom'
 import Login from './pages/Login'
@@ -20,6 +21,7 @@ function App() {
           <Route path="/courses" element={<Courses />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/feed" element={<Feed />} />
+          <Route path="/quiz" element={<Quiz />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/signin" element={<Signin />} />
