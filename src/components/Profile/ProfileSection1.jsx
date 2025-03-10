@@ -75,7 +75,7 @@ const ProfileSection1 = () => {
                   >
                     {/* Time Block */}
                     <span
-                      className={`bg-${item.color}-200 flex items-center justify-center w-[8vw] h-[3vw] text-[1vw] rounded-3xl`}
+                      className={`bg-pink-200 flex items-center justify-center w-[8vw] h-[3vw] text-[1vw] rounded-3xl`}
                     >
                       {getFormattedTime(item.index)}
                     </span>

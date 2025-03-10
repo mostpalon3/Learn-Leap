@@ -1,18 +1,24 @@
-export const CircularProgress = ({ percentage }) => {
-  const radius = 40; 
-  const circumference = 2 * Math.PI * radius; 
-  const strokeDashoffset = circumference * (1 - percentage / 100); 
+export const CircularProgress = ({ 
+  percentage, 
+  size = "3.5dvw", 
+  strokeWidth = 12, 
+  progressColor = "orange", 
+  bgColor = "" 
+}) => {
+  const radius = 40;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference * (1 - percentage / 100);
 
   return (
-    <div className="flex relative items-center justify-center right-[-1dvw]">
+    <div className="flex relative items-center justify-center" style={{ width: size, height: size }}>
       {/* Background Circle */}
-      <svg width="3.5dvw" height="3.5dvw" viewBox="0 0 100 100">
+      <svg width={size} height={size} viewBox="0 0 100 100">
         <circle
           cx="50"
           cy="50"
           r={radius}
-          stroke="#F2EFE7"
-          strokeWidth="12"
+          stroke={bgColor}
+          strokeWidth={strokeWidth}
           fill="transparent"
         />
         {/* Progress Circle */}
@@ -20,8 +26,8 @@ export const CircularProgress = ({ percentage }) => {
           cx="50"
           cy="50"
           r={radius}
-          stroke="orange"
-          strokeWidth="12"
+          stroke={progressColor}
+          strokeWidth={strokeWidth}
           fill="transparent"
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
@@ -30,7 +36,7 @@ export const CircularProgress = ({ percentage }) => {
         />
       </svg>
       {/* Percentage Text */}
-      <span className="absolute text-[0.6dvw] text-gray-700">
+      <span className="absolute text-gray-700" style={{ fontSize: `calc(${size} * 0.2)` }}>
         {percentage}%
       </span>
     </div>
