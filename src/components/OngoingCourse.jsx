@@ -1,5 +1,5 @@
 import React from 'react'
-import { CircularProgress } from './CIrcularProgress'
+import { CircularProgress } from './CircularProgress'
 
 const OngoingCourse = ({course,topic,percentage,image}) => {
   return (

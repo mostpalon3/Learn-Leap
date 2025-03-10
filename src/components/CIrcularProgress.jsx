@@ -4,7 +4,7 @@ export const CircularProgress = ({ percentage }) => {
   const strokeDashoffset = circumference * (1 - percentage / 100); 
 
   return (
-    <div className="relative flex items-center justify-center right-[-1dvw]">
+    <div className="flex relative items-center justify-center right-[-1dvw]">
       {/* Background Circle */}
       <svg width="3.5dvw" height="3.5dvw" viewBox="0 0 100 100">
         <circle

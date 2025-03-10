@@ -1,15 +1,33 @@
-import React from 'react';
-import { getFormattedTime } from '../TimeFormat.mjs';
+import React from "react";
+import { getFormattedTime } from "../TimeFormat.mjs";
+import * as lucide from "lucide-react";
 
 // Importing images
 import profileVector from "../../assets/images/profile-vector.png";
+import { CircularProgress } from "../CircularProgress";
+import Leaderboard from "../Leaderboard";
 
 const ProfileSection1 = () => {
-    const currentTime = getFormattedTime();
-    console.log(currentTime);
+  const schedule = {
+    1: {
+      index: 0,
+      subject: "physics",
+      color: "amber",
+    },
+    2: {
+      index: 1,
+      subject: "chemistry",
+      color: "pink",
+    },
+    3: {
+      index: 2,
+      subject: "maths",
+      color: "green",
+    },
+  };
   return (
     <>
-            <div className="border-r-[0.1px] border-gray-400 w-[72%] p-[3dvw] pt-[4vh] h-full">
+      <div className="border-r-[0.1px] border-gray-400 w-[72%] p-[3dvw] pt-[4vh] h-full">
         <div className="flex justify-between items-center w-[55dvw]">
           <input
             type="text"
@@ -44,20 +62,58 @@ const ProfileSection1 = () => {
               <h2 className="text-bold text-[1.2dvw]">Today's Schedule</h2>
               <span className="text-[0.8dvw]">View all &rarr;</span>
             </div>
+            <div className="flex flex-col ">
+              {Object.values(schedule).map((item) => {
+                const Icon =
+                  lucide[
+                    item.subject.charAt(0).toUpperCase() + item.subject.slice(1)
+                  ] || lucide["BookOpen"];
+                return (
+                  <div
+                    className="flex items-center mt-[2vh] space-x-4"
+                    key={item.index}
+                  >
+                    {/* Time Block */}
+                    <span
+                      className={`bg-${item.color}-200 flex items-center justify-center w-[8vw] h-[3vw] text-[1vw] rounded-3xl`}
+                    >
+                      {getFormattedTime(item.index)}
+                    </span>
+
+                    {/* Subject Block */}
+                    <span className="flex items-center justify-center w-[20vw] h-[3vw] rounded-2xl bg-gray-200 shadow-md">
+                      {Icon &&
+                        React.createElement(Icon, {
+                          size: 24,
+                          className: "mx-2 ",
+                        })}
+                      <span className="ml-[1vw] text-[1.1vw]">
+                        {item.subject.charAt(0).toUpperCase() +
+                          item.subject.slice(1)}
+                      </span>
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
+
           <div className="w-[20dvw] h-[30dvh] border-[1px] border-gray-300 rounded-2xl p-[1.5dvw]">
             <div className="flex justify-between items-center">
               <h2 className="text-bold text-[1.2dvw]">Last 30 days</h2>
             </div>
+            <CircularProgress percentage={50}/>
+            <div className='text-gray-400 text-center mt-[3dvh]'>View Graph</div>
           </div>
         </div>
 
         <div className="w-[55dvw] h-[30dvh] border-[1px] border-gray-300 rounded-2xl mt-[2dvw] p-[1.5dvw]">
-          Leaderboard
+          <h1 className="text-[1.5dvw]">Leaderboard</h1>
+          <Leaderboard />
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ProfileSection1
+export default ProfileSection1;
