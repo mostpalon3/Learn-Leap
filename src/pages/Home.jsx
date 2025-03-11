@@ -7,12 +7,12 @@ const Home = () => {
         <section className="h-screen flex items-center justify-center">
           <div className="container mx-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 text-primary">
-              Learn Together, <br />
-              Grow Together
+              AI Learning, <br />
+              Personalized Success!
             </h1>
             <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
-              Join our community of learners and instructors to share knowledge,
-              collaborate, and grow together.
+            Join our AI-powered community to learn, share knowledge, collaborate, and achieve
+             personalized success together!
             </p>
             <button className="bg-black px-4 py-2 text-white rounded-md font-semibold">
               Get Started

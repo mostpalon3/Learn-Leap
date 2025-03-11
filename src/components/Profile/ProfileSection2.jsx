@@ -15,7 +15,7 @@ const ProfileSection2 = () => {
   return (
       <>
     {/* section 2 */}
-      <div className="p-[1.5dvw] w-full h-full">
+      <div className="p-[1.5dvw] w-full h-full ">
         <div className="flex justify-between items-center">
           <h1 className="text-bold text-[1.2dvw]">Profile</h1>
           <UserRoundPen />
