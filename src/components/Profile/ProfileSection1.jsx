@@ -1,6 +1,7 @@
 import React from "react";
 import { getFormattedTime } from "../TimeFormat.mjs";
 import * as lucide from "lucide-react";
+import clsx from "clsx";
 
 // Importing images
 import profileVector from "../../assets/images/profile-vector.png";
@@ -27,7 +28,7 @@ const ProfileSection1 = () => {
   };
   return (
     <>
-      <div className="border-r-[0.1px] border-gray-400 w-[72%] p-[3dvw] pt-[4vh] h-full">
+      <div className="border-r-[0.1px] border-gray-400 w-[72%] p-[3dvw] pt-[4vh] h-screen overflow-y-auto overflow-x-hidden flex-shrink-0 scroll-bar scroll-smooth">
         <div className="flex justify-between items-center w-[55dvw]">
           <input
             type="text"
@@ -75,7 +76,14 @@ const ProfileSection1 = () => {
                   >
                     {/* Time Block */}
                     <span
-                      className={`bg-${item.color}-200 flex items-center justify-center w-[8vw] h-[3vw] text-[1vw] rounded-3xl`}
+                      className={clsx(
+                        `flex items-center justify-center w-[8vw] h-[3vw] text-[1vw] rounded-3xl`,
+                        {
+                          "bg-amber-200": item.color === "amber",
+                          "bg-pink-200": item.color === "pink",
+                          "bg-green-200": item.color === "green",
+                        }
+                      )}
                     >
                       {getFormattedTime(item.index)}
                     </span>
@@ -102,10 +110,17 @@ const ProfileSection1 = () => {
             <div className="flex justify-between items-center">
               <h2 className="text-bold text-[1.2dvw]">Last 30 days</h2>
             </div>
-            <div className="flex justify-center items-center w-full">
-            <CircularProgress percentage={69} size="7dvw" progressColor="#66D2CE" />
+            <div className="flex justify-center items-center w-full mt-[3dvh]">
+              <CircularProgress
+                percentage={69}
+                size="7dvw"
+                progressColor="#66D2CE"
+                text={"Task Done"}
+              />
             </div>
-            <div className='text-gray-400 text-center mt-[3dvh]'>View Graph</div>
+            <div className="text-gray-400 text-center mt-[3dvh]">
+              View Graph
+            </div>
           </div>
         </div>
 

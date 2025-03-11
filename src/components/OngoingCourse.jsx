@@ -15,7 +15,9 @@ const OngoingCourse = ({course,topic,percentage,image}) => {
         {topic}
       </span>
     </div>
-    <CircularProgress percentage={percentage} />
+    <span className='ml-[4dvw]'>
+    <CircularProgress percentage={percentage}/>
+    </span>
   </div>
   )
 }

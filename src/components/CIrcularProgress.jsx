@@ -3,7 +3,8 @@ export const CircularProgress = ({
   size = "3.5dvw", 
   strokeWidth = 12, 
   progressColor = "orange", 
-  bgColor = "" 
+  bgColor = "" ,
+  text = false
 }) => {
   const radius = 40;
   const circumference = 2 * Math.PI * radius;
@@ -36,8 +37,9 @@ export const CircularProgress = ({
         />
       </svg>
       {/* Percentage Text */}
-      <span className="absolute text-gray-700" style={{ fontSize: `calc(${size} * 0.2)` }}>
+      <span className="absolute text-gray-700" style={{ fontSize: `calc(${size} * 0.2) ` }}>
         {percentage}%
+        {text&&<div className="text-gray-400 text-[0.5dvw] flex justify-center items-center">{text}</div>}
       </span>
     </div>
   );
