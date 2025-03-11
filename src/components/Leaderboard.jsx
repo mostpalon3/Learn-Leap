@@ -20,7 +20,7 @@ const Leaderboard = () => {
             <th className="p-2">Points</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="mt-1.5">
           {leaderboardData.map((student, index) => (
             <tr key={index} className="border-b-[0.1px] border-gray-300">
               <td className="p-2 font-bold inline-block">{index + 1}

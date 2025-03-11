@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 function Sidebar({ open, setOpen }) {
     const isLoggedIn = false
-    if (open=true)
+    // if (open=true)
     return (
   //theme #CAE0BC
       <aside className="left-0 top-0 w-64 h-full bg-[#dbf0dd] backdrop-blur-lg fixed shadow-lg z-10">

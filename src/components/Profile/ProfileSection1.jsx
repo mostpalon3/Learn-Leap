@@ -75,7 +75,7 @@ const ProfileSection1 = () => {
                   >
                     {/* Time Block */}
                     <span
-                      className={`bg-pink-200 flex items-center justify-center w-[8vw] h-[3vw] text-[1vw] rounded-3xl`}
+                      className={`bg-${item.color}-200 flex items-center justify-center w-[8vw] h-[3vw] text-[1vw] rounded-3xl`}
                     >
                       {getFormattedTime(item.index)}
                     </span>
@@ -102,7 +102,9 @@ const ProfileSection1 = () => {
             <div className="flex justify-between items-center">
               <h2 className="text-bold text-[1.2dvw]">Last 30 days</h2>
             </div>
-            <CircularProgress percentage={50}/>
+            <div className="flex justify-center items-center w-full">
+            <CircularProgress percentage={69} size="7dvw" progressColor="#66D2CE" />
+            </div>
             <div className='text-gray-400 text-center mt-[3dvh]'>View Graph</div>
           </div>
         </div>
