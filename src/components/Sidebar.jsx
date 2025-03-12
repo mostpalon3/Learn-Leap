@@ -1,9 +1,19 @@
 import { Link } from "react-router-dom"
-import { signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { toast } from "react-toastify";
 import { auth } from "../../config/firebase";
+import { useEffect, useState } from "react";
 
 function Sidebar({ open, setOpen }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
   const handleLogout = async () => {
     await signOut(auth);
     toast.success('Logout successful!')
@@ -20,9 +30,7 @@ function Sidebar({ open, setOpen }) {
             <Link to="/courses">Courses</Link>
             <Link to="/feed">Feed</Link>
             <Link to="/profile">Profile</Link>
-            <Link to="/login">Login</Link>
-            <Link to="/signup">Signin</Link>
-            <button onClick={handleLogout} className="cursor-pointer">Logout</button>
+            {user ? (<button onClick={handleLogout} className="cursor-pointer">Logout</button>) :(<Link to="/login">Login</Link>)}
         </div>
       </aside>
     )

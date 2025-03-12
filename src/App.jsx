@@ -15,16 +15,6 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 
 function App() {
 
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
-
-
   return (
     <div className="min-h-screen bg-zinc-100 font-varela">
       <Routes path="/" element={<Layout />}>
