@@ -7,6 +7,7 @@ import clsx from "clsx";
 import profileVector from "../../assets/images/profile-vector.png";
 import { CircularProgress } from "../CircularProgress";
 import Leaderboard from "../Leaderboard";
+import CircularProgressChart from "../CircularProgressChart";
 
 const ProfileSection1 = () => {
   const schedule = {
@@ -111,12 +112,14 @@ const ProfileSection1 = () => {
               <h2 className="text-bold text-[1.2dvw]">Last 30 days</h2>
             </div>
             <div className="flex justify-center items-center w-full mt-[3dvh]">
-              <CircularProgress
+              {/* <CircularProgress
                 percentage={69}
                 size="7dvw"
                 progressColor="#66D2CE"
                 text={"Task Done"}
-              />
+              /> */}
+              <CircularProgressChart percentage={23} label="Hours Spent" />
+              <CircularProgressChart percentage={69} label="Course" />
             </div>
             <div className="text-gray-400 text-center mt-[3dvh]">
               View Graph
