@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Home from './pages/Home'
 import About from './pages/About'
 import Courses from './pages/Courses'
@@ -6,11 +7,28 @@ import Feed from './pages/Feed'
 import NotFound from './pages/NotFound'
 import { Routes, Route } from 'react-router-dom'
 import Login from './pages/Login'
-import Signin from './pages/Signin'
+import Signup from './pages/Signup'
 import { ToastContainer } from 'react-toastify'
 import Layout from './layouts/Layout'
+import { auth } from "../config/firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 function App() {
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    alert("Logged Out!");
+  };
+
   return (
     <div className="min-h-screen bg-zinc-100 font-varela">
       <Routes path="/" element={<Layout />}>
@@ -22,7 +40,7 @@ function App() {
           <Route path="/feed" element={<Feed />} />
         </Route>
         <Route path="/login" element={<Login />} />
-        <Route path="/signin" element={<Signin />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <ToastContainer />

@@ -16,7 +16,7 @@ function Sidebar({ open, setOpen }) {
             <Link to="/feed">Feed</Link>
             <Link to="/profile">Profile</Link>
             <Link to="/login">Login</Link>
-            <Link to="/signin">Signin</Link>
+            <Link to="/signup">Signin</Link>
             {/* {isLoggedIn ? (
             <Link to="/profile">Profile</Link>
             ) : (

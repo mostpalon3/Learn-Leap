@@ -118,7 +118,7 @@ const ProfileSection1 = () => {
                 progressColor="#66D2CE"
                 text={"Task Done"}
               /> */}
-              <CircularProgressChart percentage={23} label="Hours Spent" />
+              <CircularProgressChart percentage={23} label="Hours Target" />
               <CircularProgressChart percentage={69} label="Course" />
             </div>
             <div className="text-gray-400 text-center mt-[3dvh]">

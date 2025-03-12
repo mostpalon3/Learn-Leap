@@ -2,19 +2,27 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
 import form from '../assets/form.svg'
+import { auth } from "../../config/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault()
-    console.log(email, password)
-
     if (!email || !password) {
       toast.error('Please fill in all fields')
       return
+    }
+    console.log(email, password)
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      alert("Login Successful!");
+    } catch (err) {
+      console.error(err);
     }
 
     toast.success('Login successful!')
@@ -56,8 +64,8 @@ function Login() {
           </button>
           <p>
             Don&apos;t have an account?{' '}
-            <Link to="/signin" className="text-blue-600 underline">
-              Signin
+            <Link to="/signup" className="text-blue-600 underline">
+              Signup
             </Link>
           </p>
         </form>
@@ -69,4 +77,4 @@ function Login() {
   )
 }
 
-export default Login
+export default Login;
