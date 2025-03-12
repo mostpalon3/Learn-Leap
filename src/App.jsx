@@ -24,10 +24,6 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  const handleLogout = async () => {
-    await signOut(auth);
-    alert("Logged Out!");
-  };
 
   return (
     <div className="min-h-screen bg-zinc-100 font-varela">

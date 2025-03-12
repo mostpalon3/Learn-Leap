@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom"
+import { signOut } from "firebase/auth";
+import { toast } from "react-toastify";
+import { auth } from "../../config/firebase";
 
 function Sidebar({ open, setOpen }) {
-    const isLoggedIn = false
-    // if (open=true)
+  const handleLogout = async () => {
+    await signOut(auth);
+    toast.success('Logout successful!')
+  };
     return (
   //theme #CAE0BC
       <aside className="left-0 top-0 w-64 h-full bg-[#dbf0dd] backdrop-blur-lg fixed shadow-lg z-10">
@@ -17,11 +22,7 @@ function Sidebar({ open, setOpen }) {
             <Link to="/profile">Profile</Link>
             <Link to="/login">Login</Link>
             <Link to="/signup">Signin</Link>
-            {/* {isLoggedIn ? (
-            <Link to="/profile">Profile</Link>
-            ) : (
-            <Link to="/login">Login</Link>
-            )} */}
+            <button onClick={handleLogout} className="cursor-pointer">Logout</button>
         </div>
       </aside>
     )
