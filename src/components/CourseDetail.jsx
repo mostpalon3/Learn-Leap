@@ -56,7 +56,7 @@ const CourseDetail = () => {
         ))}
       </ul>
 
-      <Link to="/" className="mt-4 inline-block bg-gray-500 text-white p-2 rounded">Back to Courses</Link>
+      <Link to="/courses" className="mt-4 inline-block bg-gray-500 text-white p-2 rounded">Back to Courses</Link>
     </div>
   );
 };
