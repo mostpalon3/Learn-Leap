@@ -84,7 +84,7 @@ const Feed = () => {
   };
 
   return (
-    <div className="flex w-full min-h-screen p-6 gap-6 justify-center flex-wrap">
+    <div className="flex w-full min-h-screen p-6 gap-6 justify-center flex-wrap relative left-[7.5%] bg-[#f6fbf6] ">
       {/* Left Sidebar */}
       <aside className="w-[300px] bg-gradient-to-br from-[#1D2226] to-[#0f1a22] p-4 rounded-2xl text-white shadow-lg flex flex-col gap-4 flex-shrink-0">
         <h3 className="text-xl mb-4 text-orange-500">Your Hub</h3>
