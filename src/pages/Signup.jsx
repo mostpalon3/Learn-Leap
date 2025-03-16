@@ -2,32 +2,41 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
 import form from '../assets/form.svg'
+import { auth } from "../../config/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
-function Login() {
+function Signup() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(email, password)
-
+  const handleSubmit = async(e) => {
+    e.preventDefault();
     if (!email || !password) {
       toast.error('Please fill in all fields')
       return
     }
+    console.log(email, password);
 
-    toast.success('Login successful!')
-    setEmail('')
-    setPassword('')
-    navigate('/')
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      toast.success('Sign Up successful!')
+      setEmail('')
+      setPassword('')
+      navigate('/profile')
+    } catch (err) {
+      toast.error(err.message);
+      console.error(err);
+    }
+
+
   }
 
   return (
     <section className="h-screen flex items-center justify-center p-5">
       <div className="mx-auto text-center md:w-1/2">
         <h1 className="text-4xl md:text-5xl font-bold mb-6 text-primary">
-          Sign In
+        Sign up for a new account
         </h1>
         <form className="max-w-md mx-auto">
           <div className="mb-4">
@@ -52,7 +61,7 @@ function Login() {
             className="bg-black px-4 py-2 text-white rounded-md font-semibold w-full mb-2"
             onClick={handleSubmit}
           >
-            Login
+            Sign up
           </button>
           <p>
             Already have an account?{' '}
@@ -69,4 +78,4 @@ function Login() {
   )
 }
 
-export default Login
+export default Signup;
