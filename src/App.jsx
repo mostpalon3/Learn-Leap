@@ -5,7 +5,7 @@ import Courses from './pages/Courses'
 import Profile from './pages/Profile'
 import Feed from './pages/Feed'
 import NotFound from './pages/NotFound'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import { ToastContainer } from 'react-toastify'
@@ -14,6 +14,18 @@ import { auth } from "../config/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 
 function App() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        navigate("/profile"); 
+      } else {
+        navigate("/"); 
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="min-h-screen bg-zinc-100 font-varela">

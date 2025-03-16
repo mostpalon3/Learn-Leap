@@ -23,7 +23,7 @@ function Signup() {
       toast.success('Sign Up successful!')
       setEmail('')
       setPassword('')
-      navigate('/')
+      navigate('/profile')
     } catch (err) {
       toast.error(err.message);
       console.error(err);

@@ -23,7 +23,7 @@ function Login() {
       toast.success("Login successful!");
       setEmail("");
       setPassword("");
-      navigate("/");
+      navigate("/profile");
     } catch (err) {
       console.error(err);
     }

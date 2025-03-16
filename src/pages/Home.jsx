@@ -1,6 +1,11 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
+  const navigate = useNavigate();
+  const handleStarted = () => {
+    navigate('/signup');
+  }
   return (
     <div className="min-h-screen">
       <div className="px-10">
@@ -14,7 +19,7 @@ const Home = () => {
             Join our AI-powered community to learn, share knowledge, collaborate, and achieve
              personalized success together!
             </p>
-            <button className="bg-black px-4 py-2 text-white rounded-md font-semibold">
+            <button className="bg-black px-4 py-2 text-white rounded-md font-semibold" onClick={handleStarted}>
               Get Started
             </button>
           </div>

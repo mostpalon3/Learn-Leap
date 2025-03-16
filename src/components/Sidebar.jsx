@@ -25,12 +25,21 @@ function Sidebar({ open, setOpen }) {
             {"X"}
         </button>
         <div className="text-center flex flex-col items-center justify-center h-full gap-8">
-            <Link to="/">Home</Link>
             <Link to="/about">About</Link>
             <Link to="/courses">Courses</Link>
-            <Link to="/feed">Feed</Link>
-            <Link to="/profile">Profile</Link>
-            {user ? (<button onClick={handleLogout} className="cursor-pointer">Logout</button>) :(<Link to="/login">Login</Link>)}
+            {user ? (
+              <>
+              <Link to="/feed">Feed</Link>
+              <Link to="/profile">Profile</Link>
+              <button onClick={handleLogout} className="cursor-pointer">Logout</button>
+              </>
+              ) :(
+                <>
+              <Link to="/">Home</Link>
+              <Link to="/login">Login</Link>
+              <Link to="/signup">Signup</Link>
+              </>
+              )}
         </div>
       </aside>
     )
