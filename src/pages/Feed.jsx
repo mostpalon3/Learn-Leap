@@ -89,7 +89,7 @@ const Feed = () => {
       <aside className="w-[300px] bg-gradient-to-br from-[#1D2226] to-[#0f1a22] p-4 rounded-2xl text-white shadow-lg flex flex-col gap-4 flex-shrink-0">
         <h3 className="text-xl mb-4 text-orange-500">Your Hub</h3>
         {/* Leaderboard */}
-        <div className="bg-gradient-to-br from-[#2a3b4c] to-[#1D2226] p-4 rounded-2xl shadow-lg max-h-[200px] overflow-y-auto">
+        <div className="bg-gradient-to-br from-[#2a3b4c] to-[#1D2226] p-4 rounded-2xl shadow-lg max-h-[200px] overflow-y-auto scroll-bar">
           <h4 className="text-base mb-2 text-white">Leaderboard 🏆</h4>
           {leaderboard.map((user, index) => (
             <div key={index} className="flex items-center gap-2 py-2">
