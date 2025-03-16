@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import './Feed.css';
 
 const Feed = () => {
   const [posts, setPosts] = useState([
@@ -49,7 +48,7 @@ const Feed = () => {
   const [aiTip, setAiTip] = useState("You’ve been posting consistently! Try engaging with others’ posts too!");
   const [poll, setPoll] = useState({
     question: "What’s the best AI framework?",
-    options: { TensorFlow: 0, PyTorch: 0, Others: 0 },
+    options: { TensorFlow: 19, PyTorch: 0, Others: 0 },
     userVote: null,
   });
 
@@ -85,55 +84,59 @@ const Feed = () => {
   };
 
   return (
-    <div className="feed-container">
+    <div className="flex w-full min-h-screen p-6 gap-6 justify-center flex-wrap">
       {/* Left Sidebar */}
-      <aside className="sidebar">
-        <h3>Your Hub</h3>
+      <aside className="w-[300px] bg-gradient-to-br from-[#1D2226] to-[#0f1a22] p-4 rounded-2xl text-white shadow-lg flex flex-col gap-4 flex-shrink-0">
+        <h3 className="text-xl mb-4 text-orange-500">Your Hub</h3>
         {/* Leaderboard */}
-        <div className="leaderboard-widget">
-          <h4>Leaderboard 🏆</h4>
+        <div className="bg-gradient-to-br from-[#2a3b4c] to-[#1D2226] p-4 rounded-2xl shadow-lg max-h-[200px] overflow-y-auto">
+          <h4 className="text-base mb-2 text-white">Leaderboard 🏆</h4>
           {leaderboard.map((user, index) => (
-            <div key={index} className="leaderboard-item">
-              <span className="rank">{user.rank}</span>
-              <div className="user-avatar-small">{user.avatar}</div>
-              <span className="leader-name">{user.name}</span>
-              <span className="leader-metric">
+            <div key={index} className="flex items-center gap-2 py-2">
+              <span className={`text-base mr-4 ${index === 0 ? 'text-yellow-400' : index === 1 ? 'text-gray-300' : 'text-[#CD7F32]'}`}>{user.rank}</span>
+              <div className="w-[30px] h-[30px] bg-blue-700 text-white flex items-center justify-center rounded-full font-bold text-sm">{user.avatar}</div>
+              <span className="font-bold text-white">{user.name}</span>
+              <span className="text-sm text-gray-500">
                 {user.achievements ? `${user.achievements} Achievements` : user.posts ? `${user.posts} Posts` : `${user.comments} Comments`}
               </span>
             </div>
           ))}
         </div>
         {/* Daily Goals */}
-        <div className="challenge-widget">
-          <h4>Daily Goals 🎯</h4>
-          <p>Complete a coding problem today</p>
-          <div className="progress-bar">
-            <div className="progress-fill" style={{ width: `${challengeProgress}%` }}></div>
+        <div className="bg-gray-200 p-4 rounded-2xl shadow-lg">
+          <h4 className="text-base mb-2 text-gray-800">Daily Goals 🎯</h4>
+          <p className="text-sm text-gray-800 mb-4">Complete a coding problem today</p>
+          <div className="w-full h-[15px] bg-gray-500 rounded-full overflow-hidden mb-2">
+            <div className="h-full bg-teal-500 rounded-full transition-all duration-500" style={{ width: `${challengeProgress}%` }}></div>
           </div>
-          <span>{challengeProgress}% Complete</span>
-          {challengeProgress === 100 ? <span className="trophy-icon">🏆</span> : <button className="challenge-button">Opt-In</button>}
+          <span className="text-sm text-gray-800">{challengeProgress}% Complete</span>
+          {challengeProgress === 100 ? (
+            <span className="text-base text-orange-500 ml-2">🏆</span>
+          ) : (
+            <button className="w-full p-4 bg-teal-500 text-white rounded-xl hover:bg-teal-600 transition-all">Opt-In</button>
+          )}
         </div>
         {/* My Streak & Activity Log */}
-        <div className="streak-widget">
-          <h4>My Streak & Log 🔄</h4>
-          <p>Posting Streak: {streakDays}-day 🔥</p>
-          <div className="activity-log">
+        <div className="bg-gray-200 p-4 rounded-2xl shadow-lg">
+          <h4 className="text-base mb-2 text-gray-800">My Streak & Log 🔄</h4>
+          <p className="text-sm text-gray-800 mb-4">Posting Streak: {streakDays}-day 🔥</p>
+          <div className="flex flex-col gap-2">
             {activityLog.map((activity, index) => (
-              <div key={index} className="activity-item">
+              <div key={index} className="flex justify-between text-sm text-gray-800">
                 <span>{activity.text}</span>
-                <span className="activity-time">{activity.time}</span>
+                <span className="text-gray-500">{activity.time}</span>
               </div>
             ))}
           </div>
         </div>
         {/* Community Poll */}
-        <div className="poll-widget">
-          <h4>Community Poll 📊</h4>
-          <p>{poll.question}</p>
+        <div className="bg-gray-200 p-4 rounded-2xl shadow-lg">
+          <h4 className="text-base mb-2 text-gray-800">Community Poll 📊</h4>
+          <p className="text-sm text-gray-600 mb-4">{poll.question}</p>
           {Object.keys(poll.options).map(option => (
             <button
               key={option}
-              className={`poll-option ${poll.userVote === option ? 'voted' : ''}`}
+              className={`block w-full p-4 mb-2 bg-white border border-gray-500 rounded-xl text-gray-800 ${poll.userVote === option ? 'bg-blue-700 text-white border-blue-700' : ''} hover:bg-blue-100 transition-all disabled:opacity-70 disabled:cursor-not-allowed`}
               onClick={() => handleVote(option)}
               disabled={poll.userVote}
             >
@@ -144,9 +147,9 @@ const Feed = () => {
       </aside>
 
       {/* Main Feed */}
-      <main className="feed-main">
+      <main className="flex-1 flex flex-col gap-6 max-w-[600px] min-w-[500px]">
         <PostInput />
-        <div className="posts-list">
+        <div className="flex flex-col gap-6">
           {posts.map(post => (
             <PostCard
               key={post.id}
@@ -159,29 +162,29 @@ const Feed = () => {
       </main>
 
       {/* Right Sidebar */}
-      <aside className="right-sidebar">
-        <h3>Engagement Hub</h3>
+      <aside className="w-[300px] bg-gray-200 p-4 rounded-2xl shadow-lg flex flex-col gap-4 flex-grow max-w-[400px]">
+        <h3 className="text-xl mb-4 text-gray-800">Engagement Hub</h3>
         {/* Trending Discussions */}
-        <div className="trending-widget">
-          <h4>Trending Discussions 🔥</h4>
+        <div className="bg-white p-4 rounded-2xl shadow-lg">
+          <h4 className="text-base mb-2 text-gray-800">Trending Discussions 🔥</h4>
           {trendingPosts.map(post => (
-            <a href={`#post-${post.id}`} key={post.id} className="trending-item">
+            <a href={`#post-${post.id}`} key={post.id} className="block text-orange-500 text-sm mb-2 hover:underline hover:font-bold transition-all">
               {post.title} ({post.likes} Likes)
             </a>
           ))}
         </div>
         {/* Quick Actions */}
-        <div className="quick-actions-widget">
-          <h4>Quick Actions ⚡</h4>
-          <button className="quick-action-btn">Start a Discussion</button>
-          <button className="quick-action-btn">Post a Project</button>
-          <button className="quick-action-btn">Find a Mentor</button>
-          <button className="quick-action-btn">Join a Study Group</button>
+        <div className="bg-white p-4 rounded-2xl shadow-lg">
+          <h4 className="text-base mb-2 text-gray-800">Quick Actions ⚡</h4>
+          <button className="block w-full p-3 mb-2 bg-blue-700 text-white border border-white rounded-xl hover:bg-blue-800 hover:-translate-y-1 transition-all text-sm font-bold">Start a Discussion</button>
+          <button className="block w-full p-3 mb-2 bg-blue-700 text-white border border-white rounded-xl hover:bg-blue-800 hover:-translate-y-1 transition-all text-sm font-bold">Post a Project</button>
+          <button className="block w-full p-3 mb-2 bg-blue-700 text-white border border-white rounded-xl hover:bg-blue-800 hover:-translate-y-1 transition-all text-sm font-bold">Find a Mentor</button>
+          <button className="block w-full p-3 mb-2 bg-blue-700 text-white border border-white rounded-xl hover:bg-blue-800 hover:-translate-y-1 transition-all text-sm font-bold">Join a Study Group</button>
         </div>
         {/* AI Mentor Tips */}
-        <div className="ai-tip-widget">
-          <h4>AI Mentor Tips 🤖</h4>
-          <p>{aiTip}</p>
+        <div className="bg-white p-4 rounded-2xl shadow-lg">
+          <h4 className="text-base mb-2 text-gray-800">AI Mentor Tips 🤖</h4>
+          <p className="text-sm text-gray-600">{aiTip}</p>
         </div>
       </aside>
     </div>
@@ -199,19 +202,22 @@ const PostInput = () => {
   };
 
   return (
-    <div className="post-input">
+    <div className="bg-gray-200 p-4 rounded-2xl shadow-lg flex flex-col gap-4">
       <textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="Share your achievements or updates..."
+        className="w-full min-h-[100px] border border-gray-500 rounded-xl p-4 text-base resize-y focus:border-blue-700 focus:outline-none bg-white text-gray-800"
       />
-      {image && <img src={image} alt="Preview" className="post-preview-image" />}
-      <div className="post-input-actions">
-        <label className="image-upload">
-          <input type="file" accept="image/*" onChange={handleImageUpload} />
+      {image && <img src={image} alt="Preview" className="max-w-full h-auto rounded-xl mt-4 shadow-lg" />}
+      <div className="flex justify-between items-center">
+        <label className="cursor-pointer text-blue-700 text-sm flex items-center gap-2">
+          <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
           Add Image
         </label>
-        <button className="post-button">📝 Post</button>
+        <button className="p-4 bg-blue-700 text-white rounded-2xl hover:shadow-lg hover:-translate-y-1 transition-all text-base flex items-center gap-2 disabled:bg-gray-500 disabled:cursor-not-allowed">
+          📝 Post
+        </button>
       </div>
     </div>
   );
@@ -234,59 +240,58 @@ const PostCard = ({ post, onLike, onReply }) => {
   };
 
   return (
-    <div className={`post-card ${post.type === 'achievement' ? 'achievement' : ''}`}>
-      <div className="post-header">
-        <div className="user-avatar">{post.user.avatar}</div>
-        <div className="user-info">
-          <span className="user-name">{post.user.name}</span>
-          <span className="user-bio">{post.user.bio}</span>
-          <span className="timestamp">{post.timestamp}</span>
+    <div className={`bg-gray-100 p-4 rounded-2xl shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all flex flex-col gap-4 ${post.type === 'achievement' ? 'border-l-4 border-orange-500' : ''}`}>
+      <div className="flex items-center gap-4">
+        <div className="w-[50px] h-[50px] bg-blue-700 text-white flex items-center justify-center rounded-full font-bold text-xl hover:bg-blue-800 transition-all">{post.user.avatar}</div>
+        <div className="flex flex-col">
+          <span className="font-bold text-base text-gray-800">{post.user.name}</span>
+          <span className="text-sm text-gray-600">{post.user.bio}</span>
+          <span className="text-sm text-gray-600">{post.timestamp}</span>
         </div>
       </div>
-      <div className="post-content" style={{ lineHeight: '1.6' }}>
-        {post.type === 'achievement' && <span className="achievement-icon">{post.achievementIcon}</span>}
-        <p className={isExpanded || !isLongContent ? '' : 'truncated'}>
-          {post.content}
-        </p>
+      <div className="text-base text-gray-800 mb-4 leading-relaxed">
+        {post.type === 'achievement' && <span className="text-2xl mr-4 text-orange-500">{post.achievementIcon}</span>}
+        <p className={isExpanded || !isLongContent ? '' : 'line-clamp-3'}>{post.content}</p>
         {isLongContent && (
-          <button className="read-more" onClick={() => setIsExpanded(!isExpanded)}>
+          <button className="bg-transparent border-none text-blue-700 text-sm mt-4 hover:font-bold hover:underline transition-all" onClick={() => setIsExpanded(!isExpanded)}>
             {isExpanded ? 'Show Less' : 'Read More'}
           </button>
         )}
       </div>
-      {post.image && <img src={post.image} alt="Post Content" className="post-image" />}
-      <div className="post-stats">
+      {post.image && <img src={post.image} alt="Post Content" className="max-w-full h-auto rounded-xl mb-4 shadow-lg" />}
+      <div className="flex gap-6 text-sm text-gray-600 mb-4 pt-4 border-t border-gray-500">
         <span>{post.likes} Likes</span>
         <span>{post.comments.length} Comments</span>
         <span>{post.shares} Shares</span>
       </div>
-      <div className="post-actions">
-        <button onClick={onLike}>Like</button>
-        <button>Comment</button>
-        <button className="share-action">Share</button>
+      <div className="flex gap-6 p-4 border-t border-gray-500">
+        <button onClick={onLike} className="bg-transparent border-none text-blue-700 text-sm flex items-center gap-4 hover:font-bold hover:text-base transition-all">Like</button>
+        <button className="bg-transparent border-none text-blue-700 text-sm flex items-center gap-4 hover:font-bold hover:text-base transition-all">Comment</button>
+        <button className="bg-transparent border-none text-blue-700 text-sm flex items-center gap-4 hover:font-bold hover:underline transition-all">Share</button>
       </div>
-      <div className="comments-preview">
+      <div className="mt-4 bg-gray-200 p-4 rounded-xl">
         {post.comments.map((comment, idx) => (
-          <div key={idx} className="comment-item" style={{ marginLeft: idx > 0 ? '20px' : '0' }}>
+          <div key={idx} className="mb-2" style={{ marginLeft: idx > 0 ? '20px' : '0' }}>
             <p><strong>{comment.user}:</strong> {comment.text}</p>
-            <button className="reply-btn" onClick={() => setReplyIndex(idx)}>Reply</button>
+            <button className="bg-transparent border-none text-blue-700 text-sm ml-4 hover:underline transition-all" onClick={() => setReplyIndex(idx)}>Reply</button>
             {replyIndex === idx && (
-              <form onSubmit={handleReplySubmit} className="reply-form">
+              <form onSubmit={handleReplySubmit} className="flex gap-2 mt-2">
                 <input
                   type="text"
                   value={replyText}
                   onChange={(e) => setReplyText(e.target.value)}
                   placeholder="Write a reply..."
+                  className="flex-1 p-2 border border-gray-500 rounded-xl text-sm"
                 />
-                <button type="submit">Send</button>
+                <button type="submit" className="p-2 bg-blue-700 text-white rounded-xl hover:bg-blue-800 transition-all">Send</button>
               </form>
             )}
             {comment.replies.map((reply, rIdx) => (
-              <p key={rIdx} className="reply-text"><strong>{reply.user}:</strong> {reply.text}</p>
+              <p key={rIdx} className="text-sm text-gray-800 ml-5"><strong>{reply.user}:</strong> {reply.text}</p>
             ))}
           </div>
         ))}
-        {post.comments.length > 2 && <span className="more-comments">View {post.comments.length - 2} more comments</span>}
+        {post.comments.length > 2 && <span className="text-sm text-blue-700 cursor-pointer hover:underline transition-all">View {post.comments.length - 2} more comments</span>}
       </div>
     </div>
   );
