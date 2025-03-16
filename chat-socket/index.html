@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Test</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h2>Real-time Chat Messages</h2>
+    <ul id="messages"></ul>
+
+    <script>
+        const socket = io();
+
+        socket.on('chat message', (msg, id) => {
+            const li = document.createElement('li');
+            li.textContent = msg;
+            document.getElementById('messages').appendChild(li);
+        });
+    </script>
+</body>
+</html>

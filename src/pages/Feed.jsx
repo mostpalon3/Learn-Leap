@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-
 const Feed = () => {
   const [posts, setPosts] = useState([
     {

@@ -1,6 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 @import "tailwindcss";
 
-@theme{
-    --font-varela: "Varela Round", "sans-serif";
+:root {
+    --font-varela: "Varela Round", sans-serif;
+}
+
+body {
+    font-family: var(--font-varela);
+}
+
+.scroll-bar::-webkit-scrollbar {
+    display: none;
+}
+.scroll-bar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
