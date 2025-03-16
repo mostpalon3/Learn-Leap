@@ -10,7 +10,7 @@ import trophyIcon from "../../assets/icons/trophy.png";
 
 
 
-const ProfileSection2 = () => {
+const ProfileSection2 = ({user}) => {
     const gender = "male";//male/female
   return (
       <>
@@ -26,7 +26,7 @@ const ProfileSection2 = () => {
             alt="Profile photo"
             className="w-[10dvw]"
           />
-          <h1 className="text-[1.5dvw]">Aegon Targaryen</h1>
+          <h1 className="text-[1.5dvw]">{user?.displayName || "Jon Snow"}</h1>
           <span className="text-gray-400 text-[0.8dvw]">Student</span>
         </div>
 

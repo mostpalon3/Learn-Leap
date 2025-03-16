@@ -8,8 +8,9 @@ import profileVector from "../../assets/images/profile-vector.png";
 import { CircularProgress } from "../CircularProgress";
 import Leaderboard from "../Leaderboard";
 import CircularProgressChart from "../CircularProgressChart";
+import { useNavigate } from "react-router-dom";
 
-const ProfileSection1 = () => {
+const ProfileSection1 = ({ user }) => {
   const schedule = {
     1: {
       index: 0,
@@ -27,6 +28,8 @@ const ProfileSection1 = () => {
       color: "green",
     },
   };
+
+  const navigate = useNavigate();
   return (
     <>
       <div className="border-r-[0.1px] border-gray-400 w-[72%] p-[3dvw] pt-[4vh] h-screen overflow-y-auto overflow-x-hidden flex-shrink-0 scroll-bar scroll-smooth">
@@ -51,8 +54,21 @@ const ProfileSection1 = () => {
             <span className="text-[#fafffa] text-[1dvw] mb-[-0.8dvw]">
               Welcome back
             </span>
-            <h1 className="text-[4dvw] text-[#fafffa]">John Snow</h1>
-            <p className="text-[#fafffa] text-sm text-[1dvw] mt-[0.8dvw]">
+            <h1
+              className="text-[#fafffa]"
+              style={{
+                fontSize: `${Math.max(
+                  2,
+                  4.5 - (user?.displayName?.length || 5) * 0.1
+                )}dvw`,
+              }}
+            >
+              {user?.displayName || "Jon Snow"}
+            </h1>
+            <p
+              className="text-[#fafffa] text-sm text-[1dvw] mt-[0.8dvw]"
+              onClick={() => navigate("/courses")}
+            >
               Go back to the courses &rarr;
             </p>
           </div>
