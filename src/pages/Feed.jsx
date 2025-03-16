@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Feed.css';
+// import './Feed.css';
 
 const Feed = () => {
   const [posts, setPosts] = useState([

@@ -11,7 +11,7 @@ import Signup from './pages/Signup'
 import { ToastContainer } from 'react-toastify'
 import Layout from './layouts/Layout'
 import { auth } from "../config/firebase";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged} from "firebase/auth";
 
 function App() {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-zinc-100 font-varela">
+    <div className="min-h-screen bg-zinc-100 ">
       <Routes path="/" element={<Layout />}>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
