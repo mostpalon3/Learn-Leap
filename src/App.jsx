@@ -12,6 +12,7 @@ import { ToastContainer } from 'react-toastify'
 import Layout from './layouts/Layout'
 import { auth } from "../config/firebase";
 import { onAuthStateChanged} from "firebase/auth";
+import CourseDetail from "./components/CourseDetail";
 
 function App() {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/courses" element={<Courses />} />
+          <Route path="/courses/introduction-to-react" element={<CourseDetail />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/feed" element={<Feed />} />
         </Route>
