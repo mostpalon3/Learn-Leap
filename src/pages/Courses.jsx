@@ -19,7 +19,7 @@ const Courses = () => {
   );
 
   return (
-    <div className="mx-auto px-5 space-y-8">
+    <div className="mx-auto px-5 space-y-8 h-screen">
       <h2 className="text-4xl md:text-5xl font-bold p-6 text-center mt-5">Explore Courses</h2>
       
       <div className="mb-6 flex flex-col md:flex-row md:justify-center md:items-center md:gap-2">
