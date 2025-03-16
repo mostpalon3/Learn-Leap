@@ -2,15 +2,15 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
 import form from '../assets/form.svg'
-import { auth } from "../../config/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth,googleProvider } from "../../config/firebase";
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 
 function Signup() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
-  const handleSubmit = async(e) => {
+  const signInWithEmail = async(e) => {
     e.preventDefault();
     if (!email || !password) {
       toast.error('Please fill in all fields')
@@ -28,8 +28,21 @@ function Signup() {
       toast.error(err.message);
       console.error(err);
     }
+  }
 
+  const signInWithGoogle = async(e) => {
+    e.preventDefault();
 
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      console.log("User Signed In: ", user);
+      toast.success(`Welcome ${user?.displayName || "user"}!`);
+      navigate('/profile')
+    } catch (err) {
+      toast.error(err.message);
+      console.error(err);
+    }
   }
 
   return (
@@ -59,9 +72,15 @@ function Signup() {
           </div>
           <button
             className="bg-black px-4 py-2 text-white rounded-md font-semibold w-full mb-2"
-            onClick={handleSubmit}
+            onClick={signInWithEmail}
           >
             Sign up
+          </button>
+          <button
+            className="bg-red-500 px-4 py-2 text-white rounded-md font-semibold w-full"
+            onClick={signInWithGoogle}
+          >
+            Sign up with Google
           </button>
           <p>
             Already have an account?{' '}

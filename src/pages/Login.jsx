@@ -2,8 +2,9 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import form from "../assets/form.svg";
-import { auth } from "../../config/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth, googleProvider } from "../../config/firebase";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -28,6 +29,21 @@ function Login() {
       console.error(err);
     }
   };
+
+    const signInWithGoogle = async(e) => {
+      e.preventDefault();
+  
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        const user = result.user;
+        console.log("User Signed In: ", user);
+        toast.success(`Welcome ${user.displayName}!`);
+        navigate('/profile')
+      } catch (err) {
+        toast.error(err.message);
+        console.error(err);
+      }
+    }
 
   return (
     <section className="h-screen flex items-center justify-center p-5">
@@ -59,6 +75,12 @@ function Login() {
             onClick={handleSubmit}
           >
             Login
+          </button>
+          <button
+            className="bg-red-500 px-4 py-2 text-white rounded-md font-semibold w-full"
+            onClick={signInWithGoogle}
+          >
+            Login with Google
           </button>
           <p>
             Don&apos;t have an account?{" "}
