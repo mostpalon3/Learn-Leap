@@ -15,8 +15,8 @@ const CourseDetail = () => {
       { name: "React Router Guide", link: "https://reactrouter.com/" },
     ],
     quizzes: [
-      { title: "React Basics Quiz", link: "/quiz/react-basics" },
-      { title: "Hooks & State Quiz", link: "/quiz/hooks-state" },
+      { title: "React Basics Quiz", link: "/quiz" },
+      { title: "Hooks & State Quiz", link: "/quiz" },
     ],
     videos: [
       { title: "React Crash Course", link: "https://youtu.be/w7ejDZ8SWv8" },
