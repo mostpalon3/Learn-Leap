@@ -24,7 +24,7 @@ const FloatingChatbot = () => {
   };
 
   return (
-    <div className="fixed bottom-12 right-12 z-50">
+    <div className="fixed bottom-15 right-12 z-50">
       <button
         className="w-16 h-16 opacity-50 bg-green-700 text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-pink-600 transition"
         onClick={handleChatbotClick}
