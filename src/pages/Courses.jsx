@@ -9,6 +9,14 @@ const Courses = () => {
     { id: 2, title: 'Advanced JavaScript', instructor: 'Jane Smith', category: 'Programming', rating: 4.8, students: 980, price: 59.99 },
     { id: 3, title: 'Machine Learning Basics', instructor: 'Alex Johnson', category: 'Data Science', rating: 4.6, students: 1500, price: 69.99 },
     { id: 4, title: 'UI/UX Design Principles', instructor: 'Emily Brown', category: 'Design', rating: 4.7, students: 850, price: 54.99 },
+    { id: 5, title: 'Full Stack Web Development', instructor: 'Mark Wilson', category: 'Web Development', rating: 4.9, students: 2000, price: 79.99 },
+    { id: 6, title: 'Python Programming', instructor: 'Jessica Lee', category: 'Programming', rating: 4.7, students: 1100, price: 64.99 },
+    { id: 7, title: 'Data Analysis with Python', instructor: 'David Moore', category: 'Data Science', rating: 4.8, students: 1300, price: 74.99 },
+    { id: 8, title: 'Graphic Design Fundamentals', instructor: 'Sophia Davis', category: 'Design', rating: 4.6, students: 950, price: 59.99 },
+    { id: 9, title: 'React Native Development', instructor: 'Michael Taylor', category: 'Web Development', rating: 4.7, students: 1800, price: 69.99 },
+    { id: 10, title: 'Java Programming', instructor: 'Oliver Clark', category: 'Programming', rating: 4.5, students: 1000, price: 54.99 },
+    { id: 11, title: 'Data Visualization with Python', instructor: 'Emma White', category: 'Data Science', rating: 4.8, students: 1400, price: 79.99 },
+    { id: 12, title: 'Logo Design Masterclass', instructor: 'William Anderson', category: 'Design', rating: 4.7, students: 900, price: 64.99 },
   ]);
 
   const [searchTerm, setSearchTerm] = useState('');

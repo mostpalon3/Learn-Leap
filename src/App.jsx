@@ -29,7 +29,7 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-zinc-100 ">
+    <div className="min-h-screen bg-[#f6fbf6] ">
       <Routes path="/" element={<Layout />}>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />

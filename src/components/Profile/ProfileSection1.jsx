@@ -66,7 +66,7 @@ const ProfileSection1 = ({ user }) => {
               {user?.displayName || "Jon Snow"}
             </h1>
             <p
-              className="text-[#fafffa] text-sm text-[1dvw] mt-[0.8dvw]"
+              className="text-[#fafffa] text-sm text-[1dvw] mt-[0.8dvw] hover:underline cursor-pointer"
               onClick={() => navigate("/courses")}
             >
               Go back to the courses &rarr;

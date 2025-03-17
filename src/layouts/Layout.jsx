@@ -10,7 +10,7 @@ function Layout() {
       {/* <Navbar /> */}
       <Sidebar />
       {<Outlet />}
-      {location.pathname !== "/profile" && <Footer />}
+      {location.pathname !== "/profile" || location.pathname !== "/courses" && <Footer />}
     </div>
   )
 }
