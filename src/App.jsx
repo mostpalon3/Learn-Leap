@@ -20,11 +20,6 @@ function App() {
   const navigate = useNavigate();
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        navigate("/profile"); 
-      } else {
-        navigate("/"); 
-      }
     });
 
     return () => unsubscribe();
