@@ -14,6 +14,7 @@ import Layout from './layouts/Layout'
 import { auth } from "../config/firebase";
 import { onAuthStateChanged} from "firebase/auth";
 import CourseDetail from "./components/CourseDetail";
+import Chat from "./pages/Chat";
 
 function App() {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/feed" element={<Feed />} />
           <Route path="/quiz" element={<Quiz />} />
+          <Route path="/chat" element={<Chat />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
