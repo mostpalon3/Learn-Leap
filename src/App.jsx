@@ -4,6 +4,7 @@ import About from './pages/About'
 import Courses from './pages/Courses'
 import Profile from './pages/Profile'
 import Feed from './pages/Feed'
+import Quiz from './pages/Quiz'
 import NotFound from './pages/NotFound'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import Login from './pages/Login'
@@ -38,6 +39,7 @@ function App() {
           <Route path="/courses/introduction-to-react" element={<CourseDetail />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/feed" element={<Feed />} />
+          <Route path="/quiz" element={<Quiz />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
