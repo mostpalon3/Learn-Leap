@@ -1,6 +1,6 @@
 function Footer() {
   return (
-        <div className="px-10 mx-auto py-10">
+        <footer className="px-10 w-[85%] flex flex-col relative left-[15%] py-10 bg-black text-white">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div>
               <h3 className="font-bold mb-4">Community Hub</h3>
@@ -24,7 +24,7 @@ function Footer() {
           <div className="border-t mt-8 pt-8 text-center text-sm opacity-80">
             <p>&copy; 2025 Community Hub. All rights reserved.</p>
           </div>
-        </div>
+        </footer>
   )
 }
 

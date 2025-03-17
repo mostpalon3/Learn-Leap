@@ -1,27 +1,49 @@
-import { useState } from 'react'
-import { toast } from 'react-toastify'
-import { Link, useNavigate } from 'react-router-dom'
-import form from '../assets/form.svg'
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
+import form from "../assets/form.svg";
+import { auth, googleProvider } from "../../config/firebase";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+
 
 function Login() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const navigate = useNavigate()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(email, password)
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (!email || !password) {
-      toast.error('Please fill in all fields')
-      return
+      toast.error("Please fill in all fields");
+      return;
     }
+    console.log(email, password);
 
-    toast.success('Login successful!')
-    setEmail('')
-    setPassword('')
-    navigate('/')
-  }
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      toast.success("Login successful!");
+      setEmail("");
+      setPassword("");
+      navigate("/profile");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+    const signInWithGoogle = async(e) => {
+      e.preventDefault();
+  
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        const user = result.user;
+        console.log("User Signed In: ", user);
+        toast.success(`Welcome ${user.displayName}!`);
+        navigate('/profile')
+      } catch (err) {
+        toast.error(err.message);
+        console.error(err);
+      }
+    }
 
   return (
     <section className="h-screen flex items-center justify-center p-5">
@@ -54,19 +76,25 @@ function Login() {
           >
             Login
           </button>
+          <button
+            className="bg-red-500 px-4 py-2 text-white rounded-md font-semibold w-full"
+            onClick={signInWithGoogle}
+          >
+            Login with Google
+          </button>
           <p>
-            Don&apos;t have an account?{' '}
-            <Link to="/signin" className="text-blue-600 underline">
-              Signin
+            Don&apos;t have an account?{" "}
+            <Link to="/signup" className="text-blue-600 underline">
+              Signup
             </Link>
           </p>
         </form>
       </div>
-      <div className='w-1/2 hidden md:block'>
-        <img src={form} alt="" className='mx-auto'/>
+      <div className="w-1/2 hidden md:block">
+        <img src={form} alt="" className="mx-auto" />
       </div>
     </section>
-  )
+  );
 }
 
-export default Login
+export default Login;

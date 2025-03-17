@@ -1,15 +1,18 @@
-import Navbar from '../components/Navbar'
+// import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import { Outlet } from 'react-router-dom'
+import { Outlet,useLocation } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
+import FloatingChatbot from '../components/floatingChatbot';
 
 function Layout() {
+  const location = useLocation();
   return (
     <div>
       {/* <Navbar /> */}
       <Sidebar />
       {<Outlet />}
-      <Footer />
+      {location.pathname !== "/profile" && location.pathname !== "/courses" && <Footer />}
+      <FloatingChatbot />
     </div>
   )
 }

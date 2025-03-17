@@ -2,32 +2,54 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { Link, useNavigate } from 'react-router-dom'
 import form from '../assets/form.svg'
+import { auth,googleProvider } from "../../config/firebase";
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 
-function Login() {
+function Signup() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(email, password)
-
+  const signInWithEmail = async(e) => {
+    e.preventDefault();
     if (!email || !password) {
       toast.error('Please fill in all fields')
       return
     }
+    console.log(email, password);
 
-    toast.success('Login successful!')
-    setEmail('')
-    setPassword('')
-    navigate('/')
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      toast.success('Sign Up successful!')
+      setEmail('')
+      setPassword('')
+      navigate('/profile')
+    } catch (err) {
+      toast.error(err.message);
+      console.error(err);
+    }
+  }
+
+  const signInWithGoogle = async(e) => {
+    e.preventDefault();
+
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      console.log("User Signed In: ", user);
+      toast.success(`Welcome ${user?.displayName || "user"}!`);
+      navigate('/profile')
+    } catch (err) {
+      toast.error(err.message);
+      console.error(err);
+    }
   }
 
   return (
     <section className="h-screen flex items-center justify-center p-5">
       <div className="mx-auto text-center md:w-1/2">
         <h1 className="text-4xl md:text-5xl font-bold mb-6 text-primary">
-          Sign In
+        Sign up for a new account
         </h1>
         <form className="max-w-md mx-auto">
           <div className="mb-4">
@@ -50,9 +72,15 @@ function Login() {
           </div>
           <button
             className="bg-black px-4 py-2 text-white rounded-md font-semibold w-full mb-2"
-            onClick={handleSubmit}
+            onClick={signInWithEmail}
           >
-            Login
+            Sign up
+          </button>
+          <button
+            className="bg-red-500 px-4 py-2 text-white rounded-md font-semibold w-full"
+            onClick={signInWithGoogle}
+          >
+            Sign up with Google
           </button>
           <p>
             Already have an account?{' '}
@@ -69,4 +97,4 @@ function Login() {
   )
 }
 
-export default Login
+export default Signup;

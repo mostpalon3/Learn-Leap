@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Courses = () => {
-  const [courses, setCourses] = useState([
+  const navigate = useNavigate();
+
+  const [courses] = useState([
     { id: 1, title: 'Introduction to React', instructor: 'John Doe', category: 'Web Development', rating: 4.5, students: 1200, price: 49.99 },
     { id: 2, title: 'Advanced JavaScript', instructor: 'Jane Smith', category: 'Programming', rating: 4.8, students: 980, price: 59.99 },
     { id: 3, title: 'Machine Learning Basics', instructor: 'Alex Johnson', category: 'Data Science', rating: 4.6, students: 1500, price: 69.99 },
     { id: 4, title: 'UI/UX Design Principles', instructor: 'Emily Brown', category: 'Design', rating: 4.7, students: 850, price: 54.99 },
+    { id: 5, title: 'Full Stack Web Development', instructor: 'Mark Wilson', category: 'Web Development', rating: 4.9, students: 2000, price: 79.99 },
+    { id: 6, title: 'Python Programming', instructor: 'Jessica Lee', category: 'Programming', rating: 4.7, students: 1100, price: 64.99 },
+    { id: 7, title: 'Data Analysis with Python', instructor: 'David Moore', category: 'Data Science', rating: 4.8, students: 1300, price: 74.99 },
+    { id: 8, title: 'Graphic Design Fundamentals', instructor: 'Sophia Davis', category: 'Design', rating: 4.6, students: 950, price: 59.99 },
+    { id: 9, title: 'React Native Development', instructor: 'Michael Taylor', category: 'Web Development', rating: 4.7, students: 1800, price: 69.99 },
+    { id: 10, title: 'Java Programming', instructor: 'Oliver Clark', category: 'Programming', rating: 4.5, students: 1000, price: 54.99 },
+    { id: 11, title: 'Data Visualization with Python', instructor: 'Emma White', category: 'Data Science', rating: 4.8, students: 1400, price: 79.99 },
+    { id: 12, title: 'Logo Design Masterclass', instructor: 'William Anderson', category: 'Design', rating: 4.7, students: 900, price: 64.99 },
   ]);
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -18,8 +29,13 @@ const Courses = () => {
     course.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleEnroll = (courseTitle) => {
+    const formattedTitle = courseTitle.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/courses/${formattedTitle}`);
+  };
+
   return (
-    <div className="mx-auto px-5 space-y-8">
+    <div className="mx-auto px-5 space-y-8 h-screen flex flex-col relative left-[7.5%] bg-[#f6fbf6] w-[85%] min-h-screen">
       <h2 className="text-4xl md:text-5xl font-bold p-6 text-center mt-5">Explore Courses</h2>
       
       <div className="mb-6 flex flex-col md:flex-row md:justify-center md:items-center md:gap-2">
@@ -41,32 +57,35 @@ const Courses = () => {
           ))}
         </select>
       </div>
-  
-  <div className='flex items-center justify-center'>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-center p-auto">
-        {filteredCourses.map((course) => (
-          <div key={course.id} className="bg-white shadow rounded-lg max-w-md">
-            <div className="p-6">
-              <h3 className="text-xl font-semibold mb-2">{course.title}</h3>
-              <p className="text-gray-600 mb-4">Instructor: {course.instructor}</p>
-              <p className="text-sm text-gray-500 mb-2">Category: {course.category}</p>
-              <div className="flex items-center mb-2">
-                <span className="text-yellow-500 mr-1">★</span>
-                <span>{course.rating.toFixed(1)}</span>
-                <span className="text-gray-500 ml-2">({course.students} students)</span>
+
+      <div className='flex items-center justify-center'>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-center p-auto">
+          {filteredCourses.map((course) => (
+            <div key={course.id} className="bg-white shadow rounded-lg max-w-md">
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2">{course.title}</h3>
+                <p className="text-gray-600 mb-4">Instructor: {course.instructor}</p>
+                <p className="text-sm text-gray-500 mb-2">Category: {course.category}</p>
+                <div className="flex items-center mb-2">
+                  <span className="text-yellow-500 mr-1">★</span>
+                  <span>{course.rating.toFixed(1)}</span>
+                  <span className="text-gray-500 ml-2">({course.students} students)</span>
+                </div>
+                <p className="text-lg font-bold text-gray-600">${course.price.toFixed(2)}</p>
               </div>
-              <p className="text-lg font-bold text-gray-600">${course.price.toFixed(2)}</p>
+              <div className="px-6 py-4 bg-gray-100">
+                <button 
+                  className="w-full bg-gray-800 hover:bg-black text-white font-bold py-2 px-4 rounded"
+                  onClick={() => handleEnroll(course.title)}
+                >
+                  Enroll Now
+                </button>
+              </div>
             </div>
-            <div className="px-6 py-4 bg-gray-100">
-              <button className="w-full bg-gray-800 hover:bg-black text-white font-bold py-2 px-4 rounded">
-                Enroll Now
-              </button>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-      
+
       {filteredCourses.length === 0 && (
         <p className="text-center text-gray-500 mt-8">No courses found matching your criteria.</p>
       )}
