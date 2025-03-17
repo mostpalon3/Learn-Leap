@@ -3,9 +3,21 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { toast } from "react-toastify";
 import { auth } from "../../config/firebase";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 function Sidebar({ open, setOpen }) {
   const [user, setUser] = useState(null);
+  const [visible, setVisible] = useState(true);
+  const location = useLocation();
+  
+  // set visible to false if url is /sigup, /login, /chat, /quiz
+  useEffect(() => {
+    if (location.pathname === '/signup' || location.pathname === '/login' || location.pathname === '/chat' || location.pathname === '/quiz') {
+      setVisible(false);
+    } else {
+      setVisible(true);
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -20,7 +32,7 @@ function Sidebar({ open, setOpen }) {
   };
     return (
   //theme #CAE0BC
-      <aside className="left-0 top-0 w-64 h-full bg-[#dbf0dd] backdrop-blur-lg fixed shadow-lg z-10">
+      <aside className={`left-0 top-0 w-64 h-full bg-[#dbf0dd] backdrop-blur-lg fixed shadow-lg z-10 ${visible?'block':'hidden'}`}>
         <button className="absolute top-5 left-5" onClick={() => setOpen(false)}>
             {"X"}
         </button>

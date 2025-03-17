@@ -15,6 +15,7 @@ import { auth } from "../config/firebase";
 import { onAuthStateChanged} from "firebase/auth";
 import CourseDetail from "./components/CourseDetail";
 import Chat from "./pages/Chat";
+import Sidebar from "./components/Sidebar";
 
 function App() {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#f6fbf6] ">
+      <Sidebar />
       <Routes path="/" element={<Layout />}>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
