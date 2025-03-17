@@ -8,7 +8,7 @@ function Layout() {
   return (
     <div>
       {/* <Navbar /> */}
-      {/* <Sidebar /> */}
+      <Sidebar />
       {<Outlet />}
       {location.pathname !== "/profile" || location.pathname !== "/courses" && <Footer />}
     </div>

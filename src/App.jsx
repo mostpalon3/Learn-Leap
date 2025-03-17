@@ -28,7 +28,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#f6fbf6] ">
-      <Sidebar />
+      {/* <Sidebar /> */}
       <Routes path="/" element={<Layout />}>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
