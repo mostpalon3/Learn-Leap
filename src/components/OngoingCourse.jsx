@@ -1,5 +1,5 @@
 import React from 'react'
-import { CircularProgress } from './CircularProgress'
+import { OngoingProgressBar } from './OngoingProgress'
 
 const OngoingCourse = ({course,topic,percentage,image}) => {
   return (
@@ -16,7 +16,7 @@ const OngoingCourse = ({course,topic,percentage,image}) => {
       </span>
     </div>
     <span className='ml-[4dvw]'>
-    <CircularProgress percentage={percentage}/>
+    <OngoingProgressBar percentage={percentage}/>
     </span>
   </div>
   )
