@@ -11,11 +11,24 @@ export default function Chat() {
     // Add user message
     const newMessages = [...messages, { sender: 'user', text: inputText }]
     setMessages(newMessages)
+    let input = inputText.toLowerCase()
+    var output;
+    switch (input) {
+      case 'explain me gravity':
+        output = `hii , i am issac newton, my dear friend! You see, I was sitting under an apple tree, pondering the mysteries of the universe, when—plop!—an apple fell upon my head. And in that very moment of inspiration, I asked myself: Why did the apple fall straight down? Why not sideways or upwards?
+
+This led me to a grand realization: there is a force that pulls objects toward the Earth! But not just apples—this force governs the motion of the moon, the planets, and even the tides! I called it gravity.`
+        break
+      case 'what is gravity?':
+        output = `
+        Gravity is a natural force that attracts two objects with mass toward each other. The greater the mass, the stronger the attraction. The closer the objects, the stronger the force.`
+        break
+    }
     setInputText('')
     // Simulate bot reply after a delay
     setTimeout(() => {
-      setMessages(prev => [...prev, { sender: 'bot', text: 'This is a simulated response.' }])
-    }, 1000)
+      setMessages(prev => [...prev, { sender: 'bot', text: output }])
+    }, 2000)
   }
 
   return (
