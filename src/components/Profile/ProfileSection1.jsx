@@ -5,7 +5,6 @@ import clsx from "clsx";
 
 // Importing images
 import profileVector from "../../assets/images/profile-vector.png";
-import { CircularProgress } from "../CircularProgress";
 import Leaderboard from "../Leaderboard";
 import CircularProgressChart from "../CircularProgressChart";
 import { useNavigate } from "react-router-dom";
