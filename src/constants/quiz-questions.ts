@@ -13,123 +13,123 @@ export interface questionInterface {
 
 export const quizQuestions: questionInterface[] = [
   {
-    subject: "Physics",
-    topic: "Kinematics",
-    question: "A car accelerates uniformly from 10 m/s to 30 m/s in 5 seconds. What is its acceleration?",
+    subject: "React",
+    topic: "JSX",
+    question: "What does JSX stand for in React?",
     options: {
-      a: "2 m/s²",
-      b: "4 m/s²",
-      c: "5 m/s²",
-      d: "6 m/s²"
-    },
-    answer: "b"
-  },
-  {
-    subject: "Physics",
-    topic: "Electricity",
-    question: "What is the SI unit of electric resistance?",
-    options: {
-      a: "Volt",
-      b: "Ohm",
-      c: "Farad",
-      d: "Coulomb"
-    },
-    answer: "b"
-  },
-  {
-    subject: "Chemistry",
-    topic: "Acids and Bases",
-    question: "Which of the following is an example of a strong acid?",
-    options: {
-      a: "Acetic acid",
-      b: "Hydrochloric acid",
-      c: "Carbonic acid",
-      d: "Hydrofluoric acid"
-    },
-    answer: "b"
-  },
-  {
-    subject: "Chemistry",
-    topic: "Redox Reactions",
-    question: "What is the oxidation state of chromium in K₂Cr₂O₇?",
-    options: {
-      a: "+6",
-      b: "+3",
-      c: "+2",
-      d: "+4"
+      a: "JavaScript XML",
+      b: "Java Syntax Extension",
+      c: "JavaScript Extension",
+      d: "JavaScript Express"
     },
     answer: "a"
   },
   {
-    subject: "Mathematics",
-    topic: "Differentiation",
-    question: "What is the derivative of sin(x) with respect to x?",
+    subject: "React",
+    topic: "Components",
+    question: "Which type of component is defined as a function that returns JSX?",
     options: {
-      a: "cos(x)",
-      b: "-cos(x)",
-      c: "sin(x)",
-      d: "-sin(x)"
+      a: "Class Component",
+      b: "Functional Component",
+      c: "Higher Order Component",
+      d: "Pure Component"
     },
-    answer: "a"
+    answer: "b"
   },
   {
-    subject: "Mathematics",
-    topic: "Quadratic Equations",
-    question: "If the sum of the roots of a quadratic equation ax² + bx + c = 0 is 7 and the product is 12, what is the equation?",
+    subject: "React",
+    topic: "State",
+    question: "Which React hook is used to manage state in a functional component?",
     options: {
-      a: "x² - 7x + 12 = 0",
-      b: "x² + 7x - 12 = 0",
-      c: "x² - 12x + 7 = 0",
-      d: "x² + 12x - 7 = 0"
+      a: "useEffect",
+      b: "useState",
+      c: "useReducer",
+      d: "useContext"
     },
-    answer: "a"
+    answer: "b"
   },
   {
-    subject: "Physics",
-    topic: "Electromagnetism",
-    question: "Which of the following statements is true about electromagnetic waves?",
+    subject: "React",
+    topic: "Props",
+    question: "How do you pass data from a parent component to a child component in React?",
     options: {
-      a: "They require a medium to travel",
-      b: "They travel at different speeds in vacuum",
-      c: "They consist of oscillating electric and magnetic fields",
-      d: "They have no practical applications"
+      a: "Using state",
+      b: "Using Redux",
+      c: "Using props",
+      d: "Using context"
     },
     answer: "c"
   },
   {
-    subject: "Chemistry",
-    topic: "Reactivity of Metals",
-    question: "Which gas is produced when zinc reacts with dilute hydrochloric acid?",
+    subject: "React",
+    topic: "Lifecycle Methods",
+    question: "Which lifecycle method is invoked immediately after a component is inserted into the DOM?",
     options: {
-      a: "Oxygen",
-      b: "Hydrogen",
-      c: "Carbon dioxide",
-      d: "Chlorine"
-    },
-    answer: "b"
-  },
-  {
-    subject: "Mathematics",
-    topic: "Integration",
-    question: "The integral of e^x with respect to x is:",
-    options: {
-      a: "e^x + C",
-      b: "x e^x",
-      c: "(e^x)/x",
-      d: "xe^x + C"
+      a: "componentDidMount",
+      b: "componentDidUpdate",
+      c: "componentWillUnmount",
+      d: "render"
     },
     answer: "a"
   },
   {
-    subject: "Physics",
-    topic: "Work and Energy",
-    question: "What is the work done when a force of 10 N moves an object by 5 meters in the direction of the force?",
+    subject: "React",
+    topic: "Hooks",
+    question: "Which React hook is used for performing side effects in a functional component?",
     options: {
-      a: "2 J",
-      b: "10 J",
-      c: "50 J",
-      d: "100 J"
+      a: "useState",
+      b: "useEffect",
+      c: "useRef",
+      d: "useMemo"
     },
-    answer: "c"
+    answer: "b"
+  },
+  {
+    subject: "React",
+    topic: "Virtual DOM",
+    question: "What is the Virtual DOM in React?",
+    options: {
+      a: "A real representation of the UI in memory",
+      b: "A copy of the real DOM that React updates efficiently",
+      c: "An alternative to the real DOM",
+      d: "A feature that directly updates the browser's DOM"
+    },
+    answer: "b"
+  },
+  {
+    subject: "React",
+    topic: "Events",
+    question: "How do you handle events in React?",
+    options: {
+      a: "Using addEventListener()",
+      b: "Using event delegation",
+      c: "Using inline JavaScript",
+      d: "Using event handlers like onClick"
+    },
+    answer: "d"
+  },
+  {
+    subject: "React",
+    topic: "Forms",
+    question: "Which property is used to create controlled components in React?",
+    options: {
+      a: "value",
+      b: "defaultValue",
+      c: "onSubmit",
+      d: "checked"
+    },
+    answer: "a"
+  },
+  {
+    subject: "React",
+    topic: "Keys",
+    question: "Why are keys used in React lists?",
+    options: {
+      a: "To uniquely identify elements for efficient updates",
+      b: "To improve performance by storing elements in local storage",
+      c: "To define the order of rendering",
+      d: "To bind event handlers to list items"
+    },
+    answer: "a"
   }
 ];
