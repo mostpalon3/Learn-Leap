@@ -1,34 +1,62 @@
 import React, { useState } from 'react'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 export default function Chat() {
   const [messages, setMessages] = useState([
     { sender: 'bot', text: 'Hello, how can I help you today?' }
   ])
   const [inputText, setInputText] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (!inputText.trim()) return
+    
     // Add user message
     const newMessages = [...messages, { sender: 'user', text: inputText }]
     setMessages(newMessages)
-    let input = inputText.toLowerCase()
-    var output;
-    switch (input) {
-      case 'explain me gravity':
-        output = `hii , i am issac newton, my dear friend! You see, I was sitting under an apple tree, pondering the mysteries of the universe, when—plop!—an apple fell upon my head. And in that very moment of inspiration, I asked myself: Why did the apple fall straight down? Why not sideways or upwards?
-
-This led me to a grand realization: there is a force that pulls objects toward the Earth! But not just apples—this force governs the motion of the moon, the planets, and even the tides! I called it gravity.`
-        break
-      case 'what is gravity?':
-        output = `
-        Gravity is a natural force that attracts two objects with mass toward each other. The greater the mass, the stronger the attraction. The closer the objects, the stronger the force.`
-        break
-    }
+    
+    // Clear input field
+    const userQuestion = inputText
     setInputText('')
-    // Simulate bot reply after a delay
-    setTimeout(() => {
-      setMessages(prev => [...prev, { sender: 'bot', text: output }])
-    }, 2000)
+    
+    // Show loading state
+    setIsLoading(true)
+    
+    try {
+      // Call backend API
+      const response = await fetch('http://localhost:3001/ask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ question: userQuestion }),
+      })
+      
+      if (!response.ok) {
+        throw new Error('Failed to get response')
+      }
+      
+      const data = await response.json()
+      
+      // Add bot response
+      setMessages(prev => [...prev, { sender: 'bot', text: data.answer }])
+    } catch (error) {
+      console.error('Error fetching response:', error)
+      setMessages(prev => [...prev, { 
+        sender: 'bot', 
+        text: 'Sorry, I encountered an error. Please try again later.' 
+      }])
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Handle Enter key press
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && !isLoading) {
+      sendMessage()
+    }
   }
 
   return (
@@ -46,10 +74,48 @@ This led me to a grand realization: there is a force that pulls objects toward t
               ${msg.sender === 'user' 
                 ? 'bg-blue-600 text-white rounded-br-none'
                 : 'bg-gray-200 text-gray-800 rounded-bl-none'}`}>
-              {msg.text}
+              {msg.sender === 'bot' ? (
+                <div className="markdown-content">
+                  <ReactMarkdown 
+                    remarkPlugins={[remarkGfm]} 
+                    components={{
+                      a: ({node, ...props}) => <a {...props} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer" />,
+                      p: ({node, ...props}) => <p {...props} className="mb-2" />,
+                      h1: ({node, ...props}) => <h1 {...props} className="text-xl font-bold my-2" />,
+                      h2: ({node, ...props}) => <h2 {...props} className="text-lg font-bold my-2" />,
+                      h3: ({node, ...props}) => <h3 {...props} className="text-md font-bold my-2" />,
+                      ul: ({node, ...props}) => <ul {...props} className="list-disc ml-6 mb-2" />,
+                      ol: ({node, ...props}) => <ol {...props} className="list-decimal ml-6 mb-2" />,
+                      li: ({node, ...props}) => <li {...props} className="mb-1" />,
+                      code: ({node, inline, ...props}) => 
+                        inline 
+                          ? <code {...props} className="bg-gray-100 px-1 rounded text-sm" />
+                          : <code {...props} className="block bg-gray-100 p-2 rounded text-sm my-2 overflow-x-auto" />,
+                      pre: ({node, ...props}) => <pre {...props} className="bg-gray-100 p-2 rounded my-2 overflow-x-auto" />,
+                      blockquote: ({node, ...props}) => <blockquote {...props} className="border-l-4 border-gray-300 pl-4 italic my-2" />,
+                      strong: ({node, ...props}) => <strong {...props} className="font-bold" />,
+                    }}
+                  >
+                    {msg.text}
+                  </ReactMarkdown>
+                </div>
+              ) : (
+                msg.text
+              )}
             </div>
           </div>
         ))}
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="max-w-md p-4 rounded-lg shadow bg-gray-200 text-gray-800 rounded-bl-none">
+              <div className="flex space-x-2">
+                <div className="w-2 h-2 rounded-full bg-gray-600 animate-bounce"></div>
+                <div className="w-2 h-2 rounded-full bg-gray-600 animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                <div className="w-2 h-2 rounded-full bg-gray-600 animate-bounce" style={{animationDelay: '0.4s'}}></div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       
       {/* Input section */}
@@ -59,14 +125,17 @@ This led me to a grand realization: there is a force that pulls objects toward t
             type="text"
             value={inputText}
             onChange={e => setInputText(e.target.value)}
+            onKeyPress={handleKeyPress}
+            disabled={isLoading}
             placeholder="Type your message..."
             className="flex-1 border border-gray-300 rounded-l-lg p-3 outline-none focus:ring-2 focus:ring-blue-400"
           />
           <button
             onClick={sendMessage}
-            className="bg-blue-600 text-white px-6 rounded-r-lg hover:bg-blue-700 transition-shadow shadow"
+            disabled={isLoading}
+            className={`${isLoading ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'} text-white px-6 rounded-r-lg transition-shadow shadow`}
           >
-            Send
+            {isLoading ? 'Sending...' : 'Send'}
           </button>
         </div>
       </footer>

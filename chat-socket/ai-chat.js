@@ -8,7 +8,10 @@ const PORT = process.env.PORT || 3000;
 
 const apiKey = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey);
-
+const cors = require('cors');
+app.use(cors({
+  origin: '*'
+}));
 const model = genAI.getGenerativeModel({
   model: "gemini-2.0-flash",
 });
