@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
@@ -8,15 +8,22 @@ export default function Chat() {
   ])
   const [inputText, setInputText] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [pdfFile, setPdfFile] = useState(null)
+  const fileInputRef = useRef(null)
 
   const sendMessage = async () => {
     if (!inputText.trim()) return
     
     // Add user message
-    const newMessages = [...messages, { sender: 'user', text: inputText }]
+    const newMessages = [...messages, { 
+      sender: 'user', 
+      text: inputText,
+      hasPdf: !!pdfFile,
+      filename: pdfFile?.name
+    }]
     setMessages(newMessages)
     
-    // Clear input field
+    // Save user input before clearing
     const userQuestion = inputText
     setInputText('')
     
@@ -24,14 +31,31 @@ export default function Chat() {
     setIsLoading(true)
     
     try {
-      // Call backend API
-      const response = await fetch('http://localhost:3000/ask', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ question: userQuestion }),
-      })
+      let response;
+      
+      // Handle PDF upload case
+      if (pdfFile) {
+        const formData = new FormData()
+        formData.append('pdfFile', pdfFile)
+        formData.append('prompt', userQuestion)
+        
+        response = await fetch('http://localhost:3000/askpdf', {
+          method: 'POST',
+          body: formData,
+        })
+        
+        // Reset PDF file after sending
+        setPdfFile(null)
+      } else {
+        // Regular text query
+        response = await fetch('http://localhost:3000/ask', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ question: userQuestion }),
+        })
+      }
       
       if (!response.ok) {
         throw new Error('Failed to get response')
@@ -52,9 +76,34 @@ export default function Chat() {
     }
   }
 
+  // Handle PDF file selection
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]
+    if (file && file.type === 'application/pdf') {
+      setPdfFile(file)
+    } else if (file) {
+      alert('Please upload a PDF file')
+      e.target.value = null
+    }
+  }
+
+  // Trigger file input click
+  const handlePdfButtonClick = () => {
+    fileInputRef.current.click()
+  }
+
+  // Remove selected PDF
+  const removePdf = () => {
+    setPdfFile(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = null
+    }
+  }
+
   // Handle Enter key press
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !isLoading) {
+    if (e.key === 'Enter' && !e.shiftKey && !isLoading) {
+      e.preventDefault()
       sendMessage()
     }
   }
@@ -100,7 +149,17 @@ export default function Chat() {
                   </ReactMarkdown>
                 </div>
               ) : (
-                msg.text
+                <div>
+                  {msg.text}
+                  {msg.hasPdf && (
+                    <div className="mt-2 pt-2 border-t border-blue-400 text-blue-100 text-sm flex items-center">
+                      <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
+                      </svg>
+                      PDF: {msg.filename}
+                    </div>
+                  )}
+                </div>
               )}
             </div>
           </div>
@@ -118,22 +177,70 @@ export default function Chat() {
         )}
       </div>
       
+      {/* PDF file indicator */}
+      {pdfFile && (
+        <div className="bg-blue-100 text-blue-800 px-4 py-2 flex items-center justify-between">
+          <div className="flex items-center">
+            <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
+            </svg>
+            <span className="font-medium">{pdfFile.name}</span>
+            <span className="ml-2 text-sm text-blue-600">({Math.round(pdfFile.size / 1024)} KB)</span>
+          </div>
+          <button 
+            onClick={removePdf} 
+            className="text-blue-700 hover:text-blue-900"
+            aria-label="Remove PDF"
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </button>
+        </div>
+      )}
+      
       {/* Input section */}
       <footer className="bg-white p-4 shadow-inner">
-        <div className="flex">
+        <div className="flex items-center">
+          {/* PDF Upload button */}
+          <button
+            onClick={handlePdfButtonClick}
+            disabled={isLoading}
+            className="bg-blue-100 hover:bg-blue-200 text-blue-600 p-3 rounded-l-lg border border-gray-300 border-r-0"
+            title="Upload PDF"
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fillRule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clipRule="evenodd" />
+            </svg>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="application/pdf"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+          </button>
+          
+          {/* Message input */}
           <input
             type="text"
             value={inputText}
             onChange={e => setInputText(e.target.value)}
             onKeyPress={handleKeyPress}
             disabled={isLoading}
-            placeholder="Type your message..."
-            className="flex-1 border border-gray-300 rounded-l-lg p-3 outline-none focus:ring-2 focus:ring-blue-400"
+            placeholder={pdfFile ? "Ask about the PDF..." : "Type your message..."}
+            className="flex-1 border border-gray-300 p-3 outline-none focus:ring-2 focus:ring-blue-400"
           />
+          
+          {/* Send button */}
           <button
             onClick={sendMessage}
-            disabled={isLoading}
-            className={`${isLoading ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'} text-white px-6 rounded-r-lg transition-shadow shadow`}
+            disabled={isLoading || !inputText.trim()}
+            className={`${
+              isLoading || !inputText.trim() 
+                ? 'bg-blue-300 cursor-not-allowed' 
+                : 'bg-blue-600 hover:bg-blue-700'
+            } text-white px-6 py-3 rounded-r-lg transition-colors`}
           >
             {isLoading ? 'Sending...' : 'Send'}
           </button>
