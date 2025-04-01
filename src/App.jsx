@@ -15,7 +15,6 @@ import { auth } from "../config/firebase";
 import { onAuthStateChanged} from "firebase/auth";
 import CourseDetail from "./components/CourseDetail";
 import Chat from "./pages/Chat";
-import Sidebar from "./components/Sidebar";
 import TopicDetail from "./components/TopicDetails";
 import PdfQuizGenerator from "./components/PdfQuizGenerator";
 
