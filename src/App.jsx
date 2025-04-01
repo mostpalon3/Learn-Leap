@@ -16,6 +16,7 @@ import { onAuthStateChanged} from "firebase/auth";
 import CourseDetail from "./components/CourseDetail";
 import Chat from "./pages/Chat";
 import Sidebar from "./components/Sidebar";
+import TopicDetail from "./components/TopicDetails";
 
 function App() {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/introduction-to-react" element={<CourseDetail />} />
+          <Route path="/topics/:topicId" element={<TopicDetail />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/feed" element={<Feed />} />
           <Route path="/quiz" element={<Quiz />} />
