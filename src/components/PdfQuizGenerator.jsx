@@ -1,5 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Upload, Clock, CheckCircle } from 'lucide-react';
+import { 
+  Upload, 
+  Clock, 
+  CheckCircle, 
+  FileText, 
+  Loader2, 
+  ChevronRight, 
+  RotateCcw, 
+  Bot, 
+  XCircle, 
+  ArrowRight, 
+  Brain,
+  BookOpen,
+  Trophy,
+  Timer,
+  Eye
+} from 'lucide-react';
 
 const PdfQuizGenerator = () => {
   const [file, setFile] = useState(null);
@@ -13,6 +29,7 @@ const PdfQuizGenerator = () => {
   const [score, setScore] = useState(0);
   const [elapsedTime, setElapsedTime] = useState(0);
   const timerRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   const handleFileUpload = (event) => {
     const selectedFile = event.target.files[0];
@@ -160,6 +177,11 @@ const PdfQuizGenerator = () => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // Handle file browser button click
+  const handleBrowseClick = () => {
+    fileInputRef.current.click();
+  };
+
   // Clean up timer on unmount
   useEffect(() => {
     return () => {
@@ -170,190 +192,378 @@ const PdfQuizGenerator = () => {
   }, []);
 
   const currentQuestion = questions[currentQuestionIndex];
+  
+  // Calculate progress percentage
+  const progressPercentage = quizStarted && !quizCompleted 
+    ? ((currentQuestionIndex + 1) / questions.length) * 100 
+    : 0;
 
   return (
-    <div className="w-[85dvw] flex relative left-[7.5%] items-center max-h-full min-h-screen max-w-4xl mx-auto p-4">
-      <div className="w-full shadow-lg rounded-lg overflow-hidden border border-gray-200">
-        {/* Header */}
-        <div className="bg-blue-50 p-6">
-          <h1 className="text-2xl text-center text-blue-800 font-bold">PDF to Quiz Generator</h1>
-          <p className="text-center text-gray-600 mt-2">
-            Upload a PDF to generate an interactive quiz with AI
-          </p>
-        </div>
-        
-        {/* Content */}
-        <div className="p-6">
-          {!quizStarted ? (
-            <div className="space-y-6">
-              {!file ? (
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
-                  <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                  <p className="mt-2 text-sm text-gray-500">Upload a PDF file to generate a quiz</p>
-                  <input 
-                    type="file" 
-                    accept=".pdf" 
-                    onChange={handleFileUpload}
-                    className="mt-4 block w-full text-sm text-gray-500
-                      file:mr-4 file:py-2 file:px-4
-                      file:rounded-full file:border-0
-                      file:text-sm file:font-semibold
-                      file:bg-blue-50 file:text-blue-700
-                      hover:file:bg-blue-100"
-                  />
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                      <CheckCircle className="h-5 w-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <p className="font-medium">{file.name}</p>
-                      <p className="text-sm text-gray-500">PDF successfully uploaded</p>
-                    </div>
-                  </div>
-                  
-                  {fileContent && !questions.length && (
-                    <div className="mt-4">
-                      <button 
-                        onClick={generateQuiz} 
-                        disabled={isLoading}
-                        className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {isLoading ? 'Generating Quiz...' : 'Generate Quiz with AI'}
-                      </button>
-                    </div>
-                  )}
-                  
-                  {questions.length > 0 && (
-                    <div className="mt-4">
-                      <p className="mb-2 text-gray-700">Quiz ready! {questions.length} questions generated.</p>
-                      <button 
-                        onClick={startQuiz}
-                        className="w-full py-2 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md"
-                      >
-                        Start Quiz
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
+    <div className="flex relative left-[15%] bg-[#f6fbf6] w-[85%] min-h-screen max-h-full items-center py-8 px-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden">
+          {/* Header */}
+          <div className="bg-[#28595a] p-6 text-white">
+            <div className="flex items-center justify-center">
+              <Brain size={28} className="text-[#dbf0dd] mr-3" />
+              <h1 className="text-2xl font-bold">PDF to Quiz Generator</h1>
             </div>
-          ) : !quizCompleted ? (
-            <div className="space-y-6">
-              <div className="flex justify-between items-center">
-                <span className="font-medium">Question {currentQuestionIndex + 1} of {questions.length}</span>
-                <div className="flex items-center space-x-1 text-gray-600">
-                  <Clock className="h-4 w-4" />
-                  <span>{formatTime(elapsedTime)}</span>
-                </div>
-              </div>
-              
-              <div className="p-4 bg-blue-50 rounded-lg">
-                <h3 className="text-lg font-medium mb-4">{currentQuestion.question}</h3>
-                <div className="space-y-3">
-                  {currentQuestion.options.map((option, index) => (
-                    <div 
-                      key={index}
-                      className={`p-3 rounded-lg border cursor-pointer transition-colors ${
-                        selectedAnswers[currentQuestion.id] === option 
-                          ? 'bg-blue-100 border-blue-300' 
-                          : 'bg-white hover:bg-gray-50 border-gray-200'
-                      }`}
-                      onClick={() => handleAnswerSelect(currentQuestion.id, option)}
+            <p className="text-center text-[#dbf0dd] mt-2">
+              Upload any PDF document and our AI will generate a custom quiz to test your knowledge
+            </p>
+          </div>
+          
+          {/* Content */}
+          <div className="p-8">
+            {!quizStarted ? (
+              <div className="space-y-6">
+                {!file ? (
+                  <div className="border-2 border-dashed border-[#dbf0dd] rounded-xl p-10 text-center flex flex-col items-center justify-center bg-[#f6fbf6]">
+                    <FileText className="h-16 w-16 text-[#28595a] mb-4" />
+                    <h3 className="text-lg font-semibold text-[#28595a] mb-2">Upload Your Study Material</h3>
+                    <p className="text-gray-600 mb-6 max-w-md">
+                      Drag and drop your PDF or click to browse. Our AI will analyze the content and create customized quiz questions.
+                    </p>
+                    
+                    <button 
+                      onClick={handleBrowseClick}
+                      className="px-5 py-3 bg-[#ff8400] text-white rounded-lg hover:bg-[#e67700] transition-colors font-medium flex items-center shadow-sm"
                     >
-                      {option}
+                      <Upload className="mr-2 h-5 w-5" />
+                      Browse Files
+                    </button>
+                    <input 
+                      ref={fileInputRef}
+                      type="file" 
+                      accept=".pdf" 
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                    
+                    <p className="mt-4 text-xs text-gray-500">
+                      Supported format: PDF (Max size: 10MB)
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-6">
+                    <div className="flex items-center p-4 bg-[#f6fbf6] rounded-lg border border-[#dbf0dd]">
+                      <div className="w-10 h-10 bg-[#dbf0dd] rounded-lg flex items-center justify-center text-[#28595a] mr-4">
+                        <FileText className="h-5 w-5" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium text-gray-800">{file.name}</p>
+                        <p className="text-sm text-gray-500">{(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+                      </div>
+                      <button 
+                        onClick={() => setFile(null)}
+                        className="text-gray-500 hover:text-red-500 transition-colors"
+                      >
+                        <XCircle className="h-5 w-5" />
+                      </button>
                     </div>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="flex justify-end">
-                <button
-                  onClick={handleNextQuestion}
-                  disabled={!selectedAnswers[currentQuestion.id]}
-                  className="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz'}
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-6 text-center">
-              <div className="mx-auto w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
-                <CheckCircle className="h-10 w-10 text-green-600" />
-              </div>
-              
-              <h3 className="text-2xl font-bold">Quiz Completed!</h3>
-              
-              <div className="p-6 bg-gray-50 rounded-lg">
-                <div className="text-4xl font-bold text-blue-600 mb-2">
-                  {score} / {questions.length}
-                </div>
-                <p className="text-gray-600">
-                  You answered {score} out of {questions.length} questions correctly
-                </p>
-                <p className="mt-2 text-gray-600">
-                  Time taken: {formatTime(elapsedTime)}
-                </p>
-              </div>
-              
-              <div className="space-y-4">
-                <h4 className="font-medium text-left">Review Answers:</h4>
-                {questions.map((question, index) => (
-                  <div key={index} className="bg-white p-4 rounded-lg border text-left">
-                    <p className="font-medium">{index + 1}. {question.question}</p>
-                    <div className="mt-2 flex items-center">
-                      <span className="text-gray-600 mr-2">Your answer:</span>
-                      <span className={`font-medium ${
-                        selectedAnswers[question.id] === question.correctAnswer
-                          ? 'text-green-600'
-                          : 'text-red-600'
-                      }`}>
-                        {selectedAnswers[question.id] || 'Not answered'}
-                      </span>
-                    </div>
-                    {selectedAnswers[question.id] !== question.correctAnswer && (
-                      <div className="mt-1 text-green-600">
-                        <span className="font-medium">Correct answer: </span>
-                        {question.correctAnswer}
+                    
+                    {fileContent && (
+                      <div className="p-4 bg-white rounded-lg border border-[#dbf0dd]">
+                        <h3 className="font-semibold text-[#28595a] mb-2 flex items-center">
+                          <Eye className="h-4 w-4 mr-2" />
+                          Content Preview
+                        </h3>
+                        <div className="bg-[#f6fbf6] p-3 rounded text-gray-700 text-sm font-mono whitespace-pre-line">
+                          {fileContent}
+                        </div>
                       </div>
                     )}
-                    <div className="mt-2 text-gray-700 text-sm">
-                      <span className="font-medium">Explanation: </span>
-                      {question.explanation}
+                    
+                    {fileContent && !questions.length && (
+                      <div className="flex justify-center">
+                        <button 
+                          onClick={generateQuiz} 
+                          disabled={isLoading}
+                          className="px-6 py-3 bg-[#28595a] hover:bg-[#1e4445] text-white font-medium rounded-lg disabled:opacity-60 disabled:cursor-not-allowed transition-colors flex items-center shadow-sm"
+                        >
+                          {isLoading ? (
+                            <>
+                              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                              Generating Quiz...
+                            </>
+                          ) : (
+                            <>
+                              <Bot className="mr-2 h-5 w-5" />
+                              Generate Quiz with AI
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    )}
+                    
+                    {questions.length > 0 && (
+                      <div className="mt-6 bg-[#dbf0dd] p-6 rounded-lg border border-[#dbf0dd]">
+                        <div className="flex items-center mb-3">
+                          <CheckCircle className="h-6 w-6 text-[#28595a] mr-3" />
+                          <h3 className="text-lg font-semibold text-[#28595a]">Quiz Ready!</h3>
+                        </div>
+                        
+                        <p className="mb-4 text-gray-700">
+                          Your AI-generated quiz contains {questions.length} questions based on the PDF content. Ready to test your knowledge?
+                        </p>
+                        
+                        <button 
+                          onClick={startQuiz}
+                          className="w-full py-3 px-4 bg-[#ff8400] hover:bg-[#e67700] text-white font-medium rounded-lg transition-colors flex items-center justify-center shadow-sm"
+                        >
+                          Start Quiz Now
+                          <ChevronRight className="ml-2 h-5 w-5" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            ) : !quizCompleted ? (
+              <div className="space-y-6">
+                {/* Progress bar and timer */}
+                <div className="flex justify-between items-center mb-2">
+                  <div className="flex items-center text-[#28595a] font-medium">
+                    <BookOpen className="h-5 w-5 mr-2" />
+                    Question {currentQuestionIndex + 1} of {questions.length}
+                  </div>
+                  <div className="flex items-center text-[#28595a] font-medium">
+                    <Timer className="h-5 w-5 mr-2" />
+                    {formatTime(elapsedTime)}
+                  </div>
+                </div>
+                
+                {/* Progress bar */}
+                <div className="w-full h-2 bg-gray-200 rounded-full mb-6">
+                  <div 
+                    className="h-full bg-[#ff8400] rounded-full transition-all duration-300"
+                    style={{ width: `${progressPercentage}%` }}
+                  ></div>
+                </div>
+                
+                {/* Question card */}
+                <div className="p-6 bg-white rounded-xl border border-[#dbf0dd] shadow-sm">
+                  <h3 className="text-lg font-medium mb-6 text-[#28595a]">{currentQuestion.question}</h3>
+                  
+                  <div className="space-y-3">
+                    {currentQuestion.options.map((option, index) => (
+                      <div 
+                        key={index}
+                        onClick={() => handleAnswerSelect(currentQuestion.id, option)}
+                        className={`p-4 rounded-lg cursor-pointer transition-all ${
+                          selectedAnswers[currentQuestion.id] === option 
+                            ? 'bg-[#28595a] text-white shadow-md' 
+                            : 'bg-[#f6fbf6] hover:bg-[#dbf0dd] text-gray-700 border border-[#dbf0dd]'
+                        }`}
+                      >
+                        <div className="flex items-center">
+                          <div className={`w-6 h-6 rounded-full flex items-center justify-center mr-3 text-sm ${
+                            selectedAnswers[currentQuestion.id] === option
+                              ? 'bg-white text-[#28595a]'
+                              : 'bg-white border border-[#28595a] text-[#28595a]'
+                          }`}>
+                            {String.fromCharCode(65 + index)}
+                          </div>
+                          <span className="flex-1">{option}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Navigation buttons */}
+                <div className="flex justify-between mt-6">
+                  <button
+                    onClick={() => currentQuestionIndex > 0 && setCurrentQuestionIndex(prev => prev - 1)}
+                    disabled={currentQuestionIndex === 0}
+                    className="py-2 px-4 border border-[#28595a] text-[#28595a] rounded-lg hover:bg-[#f6fbf6] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Previous
+                  </button>
+                  
+                  <button
+                    onClick={handleNextQuestion}
+                    disabled={!selectedAnswers[currentQuestion.id]}
+                    className="py-2 px-4 bg-[#ff8400] hover:bg-[#e67700] text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                  >
+                    {currentQuestionIndex < questions.length - 1 ? (
+                      <>
+                        Next
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </>
+                    ) : (
+                      <>
+                        Finish Quiz
+                        <CheckCircle className="ml-2 h-4 w-4" />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-8">
+                {/* Results header */}
+                <div className="text-center">
+                  <div className="mx-auto w-20 h-20 bg-[#dbf0dd] rounded-full flex items-center justify-center mb-4">
+                    <Trophy className="h-10 w-10 text-[#28595a]" />
+                  </div>
+                  
+                  <h3 className="text-2xl font-bold text-[#28595a]">Quiz Completed!</h3>
+                  <p className="text-gray-600">
+                    Great job completing the quiz on Operating Systems
+                  </p>
+                </div>
+                
+                {/* Score card */}
+                <div className="bg-[#f6fbf6] rounded-xl p-6 border border-[#dbf0dd] text-center shadow-sm">
+                  <div className="mb-4">
+                    <div className="inline-flex items-center justify-center">
+                      <div className="relative">
+                        <svg className="w-32 h-32" viewBox="0 0 36 36">
+                          <path
+                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                            fill="none"
+                            stroke="#dbf0dd"
+                            strokeWidth="3"
+                            strokeDasharray="100, 100"
+                          />
+                          <path
+                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                            fill="none"
+                            stroke="#28595a"
+                            strokeWidth="3"
+                            strokeDasharray={`${(score / questions.length) * 100}, 100`}
+                          />
+                        </svg>
+                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+                          <div className="text-3xl font-bold text-[#28595a]">{score}/{questions.length}</div>
+                          <div className="text-sm text-gray-500">Score</div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                ))}
+                  
+                  <div className="grid grid-cols-2 gap-4 text-center">
+                    <div className="bg-white p-3 rounded-lg border border-[#dbf0dd]">
+                      <p className="text-sm text-gray-500">Time Taken</p>
+                      <p className="text-xl font-bold text-[#28595a]">{formatTime(elapsedTime)}</p>
+                    </div>
+                    <div className="bg-white p-3 rounded-lg border border-[#dbf0dd]">
+                      <p className="text-sm text-gray-500">Accuracy</p>
+                      <p className="text-xl font-bold text-[#28595a]">
+                        {Math.round((score / questions.length) * 100)}%
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Review section */}
+                <div className="space-y-4">
+                  <h4 className="text-lg font-medium text-[#28595a] flex items-center">
+                    <Eye className="mr-2 h-5 w-5 text-[#ff8400]" />
+                    Review Answers
+                  </h4>
+                  
+                  <div className="space-y-4">
+                    {questions.map((question, index) => (
+                      <div 
+                        key={index} 
+                        className={`bg-white p-5 rounded-xl shadow-sm border-l-4 ${
+                          selectedAnswers[question.id] === question.correctAnswer
+                            ? 'border-l-green-500'
+                            : 'border-l-red-500'
+                        }`}
+                      >
+                        <div className="flex items-start">
+                          <div className={`w-6 h-6 rounded-full flex items-center justify-center mr-3 flex-shrink-0 mt-0.5 text-sm font-medium ${
+                            selectedAnswers[question.id] === question.correctAnswer
+                              ? 'bg-green-100 text-green-700'
+                              : 'bg-red-100 text-red-700'
+                          }`}>
+                            {index + 1}
+                          </div>
+                          <div>
+                            <p className="font-medium text-gray-800 mb-3">{question.question}</p>
+                            
+                            <div className="space-y-2 mb-4">
+                              {question.options.map((option, optIndex) => (
+                                <div 
+                                  key={optIndex}
+                                  className={`p-2 rounded-lg text-sm ${
+                                    option === question.correctAnswer
+                                      ? 'bg-green-100 text-green-800 border border-green-200'
+                                      : option === selectedAnswers[question.id] && option !== question.correctAnswer
+                                        ? 'bg-red-100 text-red-800 border border-red-200'
+                                        : 'bg-gray-50 text-gray-700 border border-gray-200'
+                                  }`}
+                                >
+                                  <div className="flex items-center">
+                                    <div className={`w-5 h-5 rounded-full flex items-center justify-center mr-2 text-xs ${
+                                      option === question.correctAnswer
+                                        ? 'bg-green-500 text-white'
+                                        : option === selectedAnswers[question.id] && option !== question.correctAnswer
+                                          ? 'bg-red-500 text-white'
+                                          : 'bg-gray-200 text-gray-600'
+                                    }`}>
+                                      {String.fromCharCode(65 + optIndex)}
+                                    </div>
+                                    <span>{option}</span>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                            
+                            <div className="bg-[#f6fbf6] p-3 rounded-lg border border-[#dbf0dd] text-sm">
+                              <p className="font-medium text-[#28595a] mb-1">Explanation:</p>
+                              <p className="text-gray-700">{question.explanation}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Action buttons */}
+                <div className="flex gap-4 justify-center">
+                  <button
+                    onClick={() => {
+                      setFile(null);
+                      setFileContent('');
+                      setQuestions([]);
+                      setQuizStarted(false);
+                      setQuizCompleted(false);
+                    }}
+                    className="py-3 px-6 bg-[#28595a] hover:bg-[#1e4445] text-white font-medium rounded-lg transition-colors flex items-center"
+                  >
+                    <RotateCcw className="mr-2 h-5 w-5" />
+                    Create New Quiz
+                  </button>
+                  
+                  <button
+                    onClick={startQuiz}
+                    className="py-3 px-6 bg-[#ff8400] hover:bg-[#e67700] text-white font-medium rounded-lg transition-colors flex items-center"
+                  >
+                    <Trophy className="mr-2 h-5 w-5" />
+                    Retry Quiz
+                  </button>
+                </div>
               </div>
-              
-              <button
-                onClick={() => {
-                  setFile(null);
-                  setFileContent('');
-                  setQuestions([]);
-                  setQuizStarted(false);
-                  setQuizCompleted(false);
-                }}
-                className="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md"
-              >
-                Create New Quiz
-              </button>
+            )}
+          </div>
+          
+          {/* Loading indicator */}
+          {isLoading && (
+            <div className="border-t border-[#dbf0dd] p-4 bg-white">
+              <div className="flex items-center justify-center space-x-3">
+                <div className="animate-spin rounded-full h-5 w-5 border-2 border-[#28595a] border-t-transparent"></div>
+                <span className="text-[#28595a]">
+                  {!file ? 'Processing PDF...' : !questions.length ? 'Analyzing content and generating questions...' : 'Loading...'}
+                </span>
+              </div>
             </div>
           )}
         </div>
-        
-        {isLoading && (
-          <div className="border-t p-4">
-            <div className="w-full flex items-center justify-center">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-              <span className="ml-2 text-gray-600">
-                {!file ? 'Processing PDF...' : !questions.length ? 'Generating quiz with AI...' : 'Loading...'}
-              </span>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
