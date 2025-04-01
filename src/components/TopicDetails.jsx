@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaReact } from "react-icons/fa";
 import { useParams, Link, useNavigate } from "react-router-dom";
 
 const TopicDetail = () => {
@@ -48,7 +49,7 @@ const TopicDetail = () => {
                 }
                 \`\`\`
                 
-                #### Why React?
+                Why React?
                 1. **Component-Based**: Build encapsulated components that manage their own state.
                 2. **Declarative**: Design simple views for each state, and React will update and render components when data changes.
                 3. **Learn Once, Write Anywhere**: Develop new features without rewriting existing code.
@@ -125,7 +126,7 @@ const TopicDetail = () => {
     // Navigation handlers
     const goToNextTopic = () => {
         if (topic.next) {
-            navigate(`/courses/topic/${topic.next}`);
+            navigate(`/topics/${topic.next}`);
             window.scrollTo(0, 0);
             setActiveTab("content");
         }
@@ -385,11 +386,11 @@ const TopicDetail = () => {
             <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                 <div className="flex justify-between items-start">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-800">{topic.title}</h1>
+                        <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">{topic.title} <FaReact className="text-blue-500" /></h1>
                         <p className="text-gray-600 mt-2">{topic.description}</p>
                     </div>
                     <Link 
-                        to="/courses/detail" 
+                        to="/courses/introduction-to-react" 
                         className="inline-flex items-center px-3 py-1.5 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-md transition-colors text-sm"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
