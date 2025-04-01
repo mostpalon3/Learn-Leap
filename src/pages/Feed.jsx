@@ -224,7 +224,7 @@ const Feed = () => {
               <a 
                 href={`#post-${post.id}`} 
                 key={post.id} 
-                className="block py-2 text-[#28595a] text-sm font-medium hover:text-[#ff8400] transition-colors flex items-center border-b border-[#dbf0dd] last:border-0"
+                className="flex items-center py-2 text-[#28595a] text-sm font-medium hover:text-[#ff8400] transition-colors border-b border-[#dbf0dd] last:border-0"
               >
                 <span className="mr-2">•</span>
                 {post.title} ({post.likes} Likes)
@@ -354,7 +354,7 @@ const PostCard = ({ post, onLike, onReply }) => {
       
       <div className="mb-4">
         {post.type === 'achievement' && (
-          <div className="flex items-center gap-2 mb-2 bg-[#dbf0dd] px-3 py-1.5 rounded-lg inline-block">
+          <div className="flex items-center gap-2 mb-2 bg-[#dbf0dd] px-3 py-1.5 rounded-lg ">
             <Award size={16} className="text-[#28595a]" />
             <span className="text-[#28595a] font-medium text-sm">Achievement Unlocked</span>
           </div>
