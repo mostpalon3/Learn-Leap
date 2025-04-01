@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { getFormattedTime } from "../TimeFormat.mjs";
-import * as lucide from "lucide-react";
+import { 
+  BookOpen, 
+  Search, 
+  PlusCircle, 
+  ChevronRight, 
+  Clock, 
+  TrendingUp, 
+  Award, 
+  Zap, 
+  Calendar,
+  Medal,
+  Target
+} from "lucide-react";
 import clsx from "clsx";
 
 // Importing images
@@ -10,40 +22,67 @@ import CircularProgressChart from "../CircularProgressChart";
 import { useNavigate } from "react-router-dom";
 
 const ProfileSection1 = ({ user }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  
   const schedule = {
     1: {
       index: 0,
-      subject: "physics",
+      subject: "Physics",
       color: "amber",
+      icon: "Zap",
+      time: "10:00 AM",
+      duration: "1 hour"
     },
     2: {
       index: 1,
-      subject: "chemistry",
+      subject: "Chemistry",
       color: "pink",
+      icon: "Flask",
+      time: "1:00 PM",
+      duration: "45 min"
     },
     3: {
       index: 2,
-      subject: "maths",
+      subject: "Mathematics",
       color: "green",
+      icon: "Calculator",
+      time: "3:30 PM",
+      duration: "1 hour"
     },
   };
 
   const navigate = useNavigate();
+  
+  const getSubjectIcon = (iconName) => {
+    const icons = {
+      "Zap": Zap,
+      "Flask": BookOpen, 
+      "Calculator": Target, 
+    };
+    return icons[iconName] || BookOpen;
+  };
+
   return (
-    <>
-      <div className="border-r-[0.1px] border-gray-400 w-[72%] p-[3dvw] pt-[4vh] h-screen overflow-y-auto overflow-x-hidden flex-shrink-0 scroll-bar scroll-smooth">
-        <div className="flex justify-between items-center w-[55dvw]">
+    <div className="border-r-[0.1px] border-gray-300 w-[72%] p-[3dvw] pt-[4vh] h-screen overflow-y-auto overflow-x-hidden flex-shrink-0 scroll-bar scroll-smooth bg-[#f6fbf6]">
+      {/* Search and Add New Button */}
+      <div className="flex justify-between items-center w-full mb-6">
+        <div className="relative w-[70%]">
           <input
             type="text"
-            placeholder={`Search for course`}
-            className="h-[3.3dvw] border-[0.5px] bg-transparent border-gray-300 rounded-lg p-4 w-[35dvw]"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search for courses, topics, or resources..."
+            className="h-[3.3dvw] w-full border-[1px] border-gray-200 bg-white rounded-lg pl-10 pr-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#28595a] transition-all"
           />
-          <button className="p-[0.9dvw] rounded-md bg-[#ff8400] text-[#fafffa] text-[0.9dvw]">
-            Add New +
-          </button>
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
         </div>
+        <button className="flex items-center px-4 py-3 rounded-lg bg-[#ff8400] hover:bg-[#e67700] text-white transition-colors shadow-sm">
+          <PlusCircle size={18} className="mr-2" />
+          <span className="font-medium">Add New Course</span>
+        </button>
+      </div>
 
-        <div className="flex w-[55dvw] h-[26dvh] bg-[#28595a] mt-[3.5dvh] rounded-3xl pr-[1dvw] box-border shadow-md shadow-amber-100">
+        <div className="flex w-[55dvw] h-[26dvh] bg-[#28595a] mt-[3.5dvh] rounded-3xl pr-[1dvw] box-border shadow-md shadow-amber-100 mb-[10dvh]">
           <img
             src={profileVector}
             alt=""
@@ -72,82 +111,141 @@ const ProfileSection1 = ({ user }) => {
             </p>
           </div>
         </div>
+      {/* </div> */}
 
-        <div className="flex justify-between items-center w-[55dvw] mt-[10dvh]">
-          <div className="w-[32.5dvw] h-[30dvh] border-[1px] border-gray-300 rounded-2xl p-[1.5dvw]">
-            <div className="flex justify-between items-center">
-              <h2 className="text-bold text-[1.2dvw]">Today's Schedule</h2>
-              <span className="text-[0.8dvw]">View all &rarr;</span>
-            </div>
-            <div className="flex flex-col ">
-              {Object.values(schedule).map((item) => {
-                const Icon =
-                  lucide[
-                    item.subject.charAt(0).toUpperCase() + item.subject.slice(1)
-                  ] || lucide["BookOpen"];
-                return (
-                  <div
-                    className="flex items-center mt-[2vh] space-x-4"
-                    key={item.index}
-                  >
-                    {/* Time Block */}
-                    <span
-                      className={clsx(
-                        `flex items-center justify-center w-[8vw] h-[3vw] text-[1vw] rounded-3xl`,
-                        {
-                          "bg-amber-200": item.color === "amber",
-                          "bg-pink-200": item.color === "pink",
-                          "bg-green-200": item.color === "green",
-                        }
-                      )}
-                    >
-                      {getFormattedTime(item.index)}
-                    </span>
-
-                    {/* Subject Block */}
-                    <span className="flex items-center justify-center w-[20vw] h-[3vw] rounded-2xl bg-gray-200 shadow-md">
-                      {Icon &&
-                        React.createElement(Icon, {
-                          size: 24,
-                          className: "mx-2 ",
-                        })}
-                      <span className="ml-[1vw] text-[1.1vw]">
-                        {item.subject.charAt(0).toUpperCase() +
-                          item.subject.slice(1)}
-                      </span>
-                    </span>
+      {/* Today's Schedule and Progress Section */}
+      <div className="flex justify-between items-stretch gap-6 mb-8">
+        {/* Today's Schedule */}
+        <div className="w-[65%] bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-bold text-[#28595a] flex items-center">
+              <Calendar size={20} className="mr-2 text-[#ff8400]" />
+              Today's Schedule
+            </h2>
+            <button className="text-sm text-[#28595a] hover:text-[#ff8400] transition-colors font-medium flex items-center">
+              View all
+              <ChevronRight size={14} className="ml-1" />
+            </button>
+          </div>
+          
+          <div className="space-y-4">
+            {Object.values(schedule).map((item) => {
+              const SubjectIcon = getSubjectIcon(item.icon);
+              return (
+                <div
+                  className="flex items-center gap-4 transition-transform hover:translate-x-1 cursor-pointer"
+                  key={item.index}
+                >
+                  <div className={clsx(
+                    "flex-shrink-0 w-16 h-16 rounded-lg flex flex-col items-center justify-center",
+                    {
+                      "bg-amber-100 text-amber-700": item.color === "amber",
+                      "bg-pink-100 text-pink-700": item.color === "pink",
+                      "bg-green-100 text-green-700": item.color === "green",
+                    }
+                  )}>
+                    <div className="text-lg font-bold">{item.time.split(' ')[0]}</div>
+                    <div className="text-xs">{item.time.split(' ')[1]}</div>
                   </div>
-                );
-              })}
-            </div>
+                  
+                  <div className="flex-1 bg-[#f6fbf6] rounded-lg p-3 pl-4 border border-[#dbf0dd]">
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center">
+                        <SubjectIcon className={clsx(
+                          "mr-3",
+                          {
+                            "text-amber-500": item.color === "amber",
+                            "text-pink-500": item.color === "pink",
+                            "text-green-500": item.color === "green",
+                          }
+                        )} size={20} />
+                        <span className="font-semibold text-gray-800">{item.subject}</span>
+                      </div>
+                      <div className="flex items-center text-gray-500 text-sm">
+                        <Clock size={14} className="mr-1" />
+                        {item.duration}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-
-          <div className="w-[20dvw] h-[30dvh] border-[1px] border-gray-300 rounded-2xl p-[1.5dvw]">
-            <div className="flex justify-between items-center">
-              <h2 className="text-bold text-[1.2dvw]">Last 30 days</h2>
-            </div>
-            <div className="flex justify-center items-center w-full mt-[3dvh]">
-              {/* <CircularProgress
-                percentage={69}
-                size="7dvw"
-                progressColor="#66D2CE"
-                text={"Task Done"}
-              /> */}
-              <CircularProgressChart percentage={23} label="Hours Target" />
-              <CircularProgressChart percentage={69} label="Course" />
-            </div>
-            <div className="text-gray-400 text-center mt-[3dvh]">
-              View Graph
-            </div>
-          </div>
+          
+          <button className="mt-6 w-full py-2 border border-[#28595a] text-[#28595a] rounded-lg hover:bg-[#28595a] hover:text-white transition-colors text-sm font-medium">
+            Add New Schedule
+          </button>
         </div>
-
-        <div className="w-[55dvw] h-[30dvh] border-[1px] border-gray-300 rounded-2xl mt-[2dvw] p-[1.5dvw]">
-          <h1 className="text-[1.5dvw]">Leaderboard</h1>
-          <Leaderboard />
+        
+        {/* Monthly Progress */}
+        <div className="w-[35%] bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div className="flex items-center mb-6">
+            <TrendingUp size={20} className="mr-2 text-[#ff8400]" />
+            <h2 className="text-xl font-bold text-[#28595a]">Last 30 Days</h2>
+          </div>
+          
+          <div className="flex justify-between items-center">
+            <CircularProgressChart percentage={23} label="Hours Target" />
+            <CircularProgressChart percentage={69} label="Course Completion" />
+          </div>
+          
+          <div className="mt-4 p-3 bg-[#f6fbf6] rounded-lg border border-[#dbf0dd]">
+            <div className="flex justify-between items-center">
+              <div>
+                <span className="text-sm text-gray-500">Monthly Goal</span>
+                <div className="text-[#28595a] font-bold">25 hours</div>
+              </div>
+              <div>
+                <span className="text-sm text-gray-500">Completed</span>
+                <div className="text-[#28595a] font-bold">5.75 hours</div>
+              </div>
+            </div>
+          </div>
+          
+          <button className="mt-3 w-full py-2 text-[#28595a] text-sm font-medium flex items-center justify-center hover:text-[#ff8400] transition-colors">
+            View Detailed Analytics
+            <ChevronRight size={14} className="ml-1" />
+          </button>
         </div>
       </div>
-    </>
+
+      {/* Leaderboard Section */}
+      <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-bold text-[#28595a] flex items-center">
+            <Medal size={20} className="mr-2 text-[#ff8400]" />
+            Leaderboard
+          </h2>
+          <div className="flex items-center gap-2">
+            <span className="text-sm bg-[#dbf0dd] text-[#28595a] px-3 py-1 rounded-full font-medium">
+              This Week
+            </span>
+            <span className="text-sm text-gray-500 px-3 py-1 rounded-full cursor-pointer hover:bg-gray-100 transition-colors">
+              All Time
+            </span>
+          </div>
+        </div>
+        
+        <Leaderboard />
+        
+        <div className="mt-4 flex justify-between items-center">
+          <div className="flex items-center">
+            <div className="text-white bg-[#28595a] rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3">
+              {(user?.displayName?.[0] || "J").toUpperCase()}
+            </div>
+            <div>
+              <div className="font-medium">{user?.displayName || "Jon Snow"}</div>
+              <div className="text-xs text-gray-500">Your Rank: #3</div>
+            </div>
+          </div>
+          
+          <div className="flex items-center">
+            <Award size={18} className="text-[#ff8400] mr-2" />
+            <span className="font-bold text-[#28595a]">450 Points</span>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
