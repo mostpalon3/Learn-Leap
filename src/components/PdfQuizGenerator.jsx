@@ -14,23 +14,18 @@ const PdfQuizGenerator = () => {
   const [elapsedTime, setElapsedTime] = useState(0);
   const timerRef = useRef(null);
 
-  // Handle file upload
   const handleFileUpload = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile && selectedFile.type === 'application/pdf') {
       setFile(selectedFile);
-      // In a real app, we would extract text from PDF here
       simulatePdfExtraction(selectedFile);
     } else {
       alert('Please upload a PDF file');
     }
   };
 
-  // Simulate PDF text extraction (in a real app, you'd use a library like pdf.js)
   const simulatePdfExtraction = (pdfFile) => {
     setIsLoading(true);
-    // In a real application, this would extract text from the PDF
-    // For this demo, we'll simulate with the sample content
     setTimeout(() => {
       setFileContent(`
         OPERATING SYSTEM CONTENT:
