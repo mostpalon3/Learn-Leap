@@ -1,9 +1,45 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+//images
+import profileVector from '../assets/images/profile-vector.png';
+import aryanImage from '../assets/images/team/aryan.jpeg';
+import sumitImage from '../assets/images/team/sumit.jpeg';
+import deepeshImage from '../assets/images/team/deepesh.jpeg';
+import shivamImage from '../assets/images/team/shivam.jpeg';
+
 function About() {
+  // Team members data with imported images
+  const teamMembers = [
+    {
+      name: "Aryan Baibaswata",
+      role: "Team Leader & AI/ML Developer",
+      bio: "Passionate about using AI to enhance educational experiences.",
+      image: aryanImage
+    },
+    {
+      name: "Sumit Sagar",
+      role: "Full Stack Developer & UI/UX Designer",
+      bio: "Expert in creating user-friendly interfaces and seamless user experiences.",
+      image: sumitImage
+    },
+    {
+      name: "Deepesh",
+      role: "Mern Stack Developer & ML Developer",
+      bio: "AI expert specializing in educational technology and adaptive learning systems.",
+      image: deepeshImage
+    },
+    {
+      name: "Shivam Chauhan",
+      role: "AI/ML Developer",
+      bio: "Focused on developing AI algorithms for personalized learning.",
+      image: shivamImage
+    }
+  ];
+
   return (
     <div className="relative left-[15%] bg-[#f6fbf6] w-[85%] min-h-screen">
+      {/* Header section */}
       <section className="px-8 pt-12 pb-24 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/3 h-full bg-[#28595a] rounded-bl-[100px] -z-10 opacity-90"></div>
         <div className="max-w-6xl mx-auto">
@@ -25,7 +61,7 @@ function About() {
             <div>
               <h2 className="text-3xl font-bold mb-6 text-[#28595a]">Our Story</h2>
               <p className="text-gray-700 mb-4">
-                Learn Leap was born during the 2025 AI-Humanity Hackathon hosted by the IIF Society of NSUT. Our team came together with a shared vision to revolutionize educational technology.
+              Learn Leap was conceived for the 2025 AI-Humanity Hackathon, hosted by the IIF Society of NSUT. Our team united with a shared vision to revolutionize educational technology
               </p>
               <p className="text-gray-700 mb-4">
                 We identified that traditional online learning platforms often lack engagement and personalization, resulting in limited effectiveness. Our solution leverages AI technology to transform how students interact with educational content, especially focusing on converting static PDFs into interactive quizzes.
@@ -37,7 +73,7 @@ function About() {
             <div className="relative">
               <div className="bg-[#dbf0dd] rounded-lg p-6 md:p-10 shadow-xl">
                 <img 
-                  src="/src/assets/images/profile-vector.png"
+                  src={profileVector}
                   alt="Learn Leap Team" 
                   className="w-full h-auto rounded-lg" 
                 />
@@ -185,38 +221,13 @@ function About() {
           </div>
         </div>
       </section>
-
+      
       {/* Team Section */}
       <section className="py-16 px-8">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold mb-12 text-center">Meet Our Team</h2>
           <div className="grid md:grid-cols-4 gap-8">
-            {[
-              {
-                name: "Aryan Baibaswata",
-                role: "Team Leader & AI/ML Developer",
-                bio: "Passionate about using AI to enhance educational experiences.",
-                image: "/src/assets/images/team/aryan.jpeg"
-              },
-              {
-                name: "Sumit Sagar",
-                role: "Full Stack Developer & UI/UX Designer",
-                bio: "Expert in creating user-friendly interfaces and seamless user experiences.",
-                image: "/src/assets/images/team/sumit.jpeg"
-              },
-              {
-                name: "Deepesh",
-                role: "Mern Stack Developer & ML Developer",
-                bio: "AI expert specializing in educational technology and adaptive learning systems.",
-                image: "/src/assets/images/team/deepesh.jpeg"
-              },
-              {
-                name: "Shivam Chauhan",
-                role: "AI/ML Developer",
-                bio: "Focused on developing AI algorithms for personalized learning.",
-                image: "/src/assets/images/team/shivam.jpeg"
-              }
-            ].map((member, index) => (
+            {teamMembers.map((member, index) => (
               <div key={index} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all">
                 <div className="h-48 bg-[#28595a] flex items-center justify-center overflow-hidden">
                   {member.image ? (
