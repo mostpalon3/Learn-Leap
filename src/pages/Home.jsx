@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import profileVector from '../assets/images/profile-vector.png';
 
 function Home() {
   const { user } = useAuth();
@@ -36,7 +37,7 @@ function Home() {
             </div>
             <div className="relative">
               <img 
-                src="/src/assets/images/profile-vector.png" 
+                src={profileVector}
                 alt="Learning illustration" 
                 className="w-full h-auto rounded-lg shadow-xl"
               />
