@@ -172,7 +172,7 @@ const PdfQuizGenerator = () => {
   const currentQuestion = questions[currentQuestionIndex];
 
   return (
-    <div className="w-[85dvw] flex relative left-[7.5%] items-center h-full max-w-4xl mx-auto p-4">
+    <div className="w-[85dvw] flex relative left-[7.5%] items-center max-h-full min-h-screen max-w-4xl mx-auto p-4">
       <div className="w-full shadow-lg rounded-lg overflow-hidden border border-gray-200">
         {/* Header */}
         <div className="bg-blue-50 p-6">

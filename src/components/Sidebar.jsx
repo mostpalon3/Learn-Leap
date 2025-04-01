@@ -37,7 +37,8 @@ function Sidebar({ open, setOpen }) {
             {"X"}
         </button>
         <div className="text-center flex flex-col items-center justify-center h-full gap-8">
-            <Link to="/about">About</Link>
+        <Link to="/">Home</Link>
+            <Link to="/about">About Us</Link>
             {user ? (
               <>
               <Link to="/courses">Courses</Link>
@@ -51,7 +52,6 @@ function Sidebar({ open, setOpen }) {
               </>
               ) :(
                 <>
-              <Link to="/">Home</Link>
               <Link to="/login">Login</Link>
               <Link to="/signup">Signup</Link>
               </>
