@@ -177,13 +177,13 @@ const PdfQuizGenerator = () => {
   const currentQuestion = questions[currentQuestionIndex];
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4">
+    <div className="w-[85dvw] flex relative left-[7.5%] items-center h-screen max-w-4xl mx-auto p-4">
       <div className="w-full shadow-lg rounded-lg overflow-hidden border border-gray-200">
         {/* Header */}
         <div className="bg-blue-50 p-6">
           <h1 className="text-2xl text-center text-blue-800 font-bold">PDF to Quiz Generator</h1>
           <p className="text-center text-gray-600 mt-2">
-            Upload a PDF to generate an interactive quiz with Gemini Flash 2.0
+            Upload a PDF to generate an interactive quiz with AI
           </p>
         </div>
         
@@ -226,7 +226,7 @@ const PdfQuizGenerator = () => {
                         disabled={isLoading}
                         className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        {isLoading ? 'Generating Quiz...' : 'Generate Quiz with Gemini Flash 2.0'}
+                        {isLoading ? 'Generating Quiz...' : 'Generate Quiz with AI'}
                       </button>
                     </div>
                   )}
@@ -354,7 +354,7 @@ const PdfQuizGenerator = () => {
             <div className="w-full flex items-center justify-center">
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
               <span className="ml-2 text-gray-600">
-                {!file ? 'Processing PDF...' : !questions.length ? 'Generating quiz with Gemini Flash 2.0...' : 'Loading...'}
+                {!file ? 'Processing PDF...' : !questions.length ? 'Generating quiz with AI...' : 'Loading...'}
               </span>
             </div>
           </div>

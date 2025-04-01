@@ -42,7 +42,7 @@ function Sidebar({ open, setOpen }) {
               <>
               <Link to="/courses">Courses</Link>
               <Link to="/pdf-to-quiz">
-              Quiz <br />
+              AI Quiz <br />
               Generator
               </Link>
               <Link to="/feed">Feed</Link>
