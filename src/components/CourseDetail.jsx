@@ -1,11 +1,36 @@
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { 
+  User, 
+  Clock, 
+  FileText, 
+  BookOpen, 
+  HelpCircle, 
+  Video, 
+  ExternalLink, 
+  ChevronLeft, 
+  Play,
+  Award,
+  HeartHandshake,
+  X,
+  CheckCircle
+} from "lucide-react";
 
 const CourseDetail = () => {
+  const [showAuditModal, setShowAuditModal] = useState(false);
+  const [auditSubmitted, setAuditSubmitted] = useState(false);
+
   const course = {
     title: "Introduction to React",
     description: "Learn the fundamentals of React, including components, state management, and more in this comprehensive course.",
     instructor: "Jane Doe",
     duration: "8 weeks",
+    level: "Beginner",
+    rating: 4.8,
+    students: 1243,
+    price: 49.99,
+    scholarshipEligible: true,
+    image: "/src/assets/images/profile-vector.png",
     topics: [
       { name: "React Basics", slug: "react-basics" },
       { name: "JSX and Components", slug: "jsx-and-components" },
@@ -27,148 +52,342 @@ const CourseDetail = () => {
     ],
   };
 
+  const submitAuditRequest = (event) => {
+    event.preventDefault();
+    // This would typically send a request to the backend
+    console.log("Audit request submitted");
+    setAuditSubmitted(true);
+    
+    // Reset after 3 seconds
+    setTimeout(() => {
+      setAuditSubmitted(false);
+      setShowAuditModal(false);
+    }, 3000);
+  };
+
   return (
-    <div className="relative left-[15%] bg-[#f6fbf6] w-[85%] min-h-screen p-8">
-      {/* Course Header */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">{course.title}</h1>
-        <p className="text-gray-600 mt-2">{course.description}</p>
-        <div className="flex flex-wrap gap-4 mt-3">
-          <div className="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-            <span className="text-gray-700">Instructor: {course.instructor}</span>
-          </div>
-          <div className="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span className="text-gray-700">Duration: {course.duration}</span>
+    <div className="relative left-[15%] bg-[#f6fbf6] w-[85%] min-h-screen">
+      {/* Course Header/Banner */}
+      <div className="relative bg-[#28595a] text-white py-12 px-8">
+        <div className="absolute bottom-0 right-0 w-1/3 h-full opacity-10">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" className="h-full w-full">
+            <circle cx="80" cy="20" r="15" fill="white" />
+            <circle cx="20" cy="70" r="20" fill="white" />
+            <circle cx="70" cy="70" r="10" fill="white" />
+          </svg>
+        </div>
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row gap-8 items-center">
+            <div className="md:w-2/3">
+              <div className="flex items-center mb-4">
+                <Link to="/courses" className="flex items-center text-[#dbf0dd] hover:text-white transition-colors">
+                  <ChevronLeft size={16} className="mr-1" />
+                  Back to Courses
+                </Link>
+              </div>
+              <h1 className="text-3xl md:text-4xl font-bold mb-4">{course.title}</h1>
+              <p className="text-lg text-[#dbf0dd] mb-6">{course.description}</p>
+              <div className="flex flex-wrap gap-6 mb-2">
+                <div className="flex items-center">
+                  <User size={18} className="mr-2 text-[#ff8400]" />
+                  <span>Instructor: {course.instructor}</span>
+                </div>
+                <div className="flex items-center">
+                  <Clock size={18} className="mr-2 text-[#ff8400]" />
+                  <span>Duration: {course.duration}</span>
+                </div>
+                <div className="flex items-center">
+                  <Award size={18} className="mr-2 text-[#ff8400]" />
+                  <span>Level: {course.level}</span>
+                </div>
+              </div>
+            </div>
+            <div className="md:w-1/3 flex justify-center">
+              <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-xs">
+                {course.scholarshipEligible && (
+                  <div className="bg-[#dbf0dd] px-4 py-2 rounded-lg mb-4 flex items-center">
+                    <HeartHandshake size={18} className="text-[#28595a] mr-2" />
+                    <span className="text-sm text-[#28595a] font-medium">Scholarship Eligible</span>
+                  </div>
+                )}
+                <div className="bg-[#dbf0dd] h-40 rounded-lg mb-4 flex items-center justify-center">
+                  <BookOpen size={64} className="text-[#28595a] opacity-50" />
+                </div>
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-2xl font-bold text-[#28595a]">${course.price}</span>
+                  <div className="flex items-center">
+                    <span className="bg-[#dbf0dd] text-[#28595a] px-2 py-1 rounded-full text-sm font-medium">
+                      {course.rating} ★
+                    </span>
+                  </div>
+                </div>
+                <button className="w-full bg-[#ff8400] hover:bg-[#e67700] text-white font-medium py-3 px-4 rounded-lg transition-colors mb-3">
+                  Enroll Now
+                </button>
+                {course.scholarshipEligible && (
+                  <button 
+                    onClick={() => setShowAuditModal(true)}
+                    className="w-full flex items-center justify-center border border-[#28595a] text-[#28595a] hover:bg-[#28595a] hover:text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  >
+                    <HeartHandshake size={16} className="mr-2" />
+                    Request Audit Access
+                  </button>
+                )}
+                <p className="text-center text-sm text-gray-500 mt-3">
+                  {course.students.toLocaleString()} students enrolled
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Course Content Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Topics Section */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-semibold text-gray-800 flex items-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
-            Topics
-          </h2>
-          <ul className="space-y-2">
-            {course.topics.map((topic, index) => (
-              <li key={index} className="group">
-                <Link 
-                  to={`/topics/${topic.slug}`} 
-                  className="flex items-start p-2 rounded-md hover:bg-blue-50 transition-colors"
-                >
-                  <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-blue-100 text-blue-500 mr-3 flex-shrink-0">
-                    {index + 1}
-                  </span>
-                  <span className="text-blue-600 group-hover:text-blue-700 font-medium">{topic.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+      {/* Audit Info Banner */}
+      {course.scholarshipEligible && (
+        <div className="max-w-6xl mx-auto px-8 py-4">
+          <div className="bg-[#dbf0dd] border-l-4 border-[#28595a] rounded-lg p-4">
+            <div className="flex items-start">
+              <HeartHandshake className="text-[#28595a] mt-1 mr-3 flex-shrink-0" size={24} />
+              <div>
+                <h3 className="font-bold text-[#28595a] mb-1">Financial Assistance Available</h3>
+                <p className="text-gray-700">
+                  This course is eligible for our Audit Access program for disadvantaged students.
+                  You'll have access to all course materials, but may have limited access to assessments and certificates.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
+      )}
 
-        {/* Resources Section */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-semibold text-gray-800 flex items-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
-            Resources
-          </h2>
-          <ul className="space-y-3">
-            {course.resources.map((res, index) => (
-              <li key={index} className="group">
-                <a 
-                  href={res.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center p-3 rounded-md hover:bg-blue-50 transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                  <span className="text-blue-600 group-hover:text-blue-700 font-medium">{res.name}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+      {/* Course Content */}
+      <div className="max-w-6xl mx-auto px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Topics Section */}
+          <div className="bg-white rounded-xl shadow-md overflow-hidden">
+            <div className="bg-[#dbf0dd] px-6 py-4">
+              <h2 className="text-xl font-bold text-[#28595a] flex items-center">
+                <FileText size={20} className="mr-2" />
+                Course Modules
+              </h2>
+            </div>
+            <div className="p-6">
+              <ul className="divide-y divide-gray-100">
+                {course.topics.map((topic, index) => (
+                  <li key={index} className="py-3 first:pt-0 last:pb-0">
+                    <Link 
+                      to={`/topics/${topic.slug}`} 
+                      className="flex items-start group hover:bg-[#f0f8f0] p-2 rounded-lg transition-colors"
+                    >
+                      <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-[#28595a] text-white text-sm mr-3 flex-shrink-0">
+                        {index + 1}
+                      </span>
+                      <div>
+                        <span className="text-gray-800 group-hover:text-[#28595a] font-medium transition-colors">{topic.name}</span>
+                        <p className="text-sm text-gray-500 mt-1">Learn the core concepts and implement examples</p>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
 
-        {/* Quizzes Section */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-semibold text-gray-800 flex items-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Quizzes
-          </h2>
-          <ul className="space-y-3">
-            {course.quizzes.map((quiz, index) => (
-              <li key={index} className="group">
-                <Link 
-                  to={quiz.link} 
-                  className="flex items-center p-3 rounded-md hover:bg-blue-50 transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span className="text-blue-600 group-hover:text-blue-700 font-medium">{quiz.title}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {/* Resources Section */}
+          <div className="bg-white rounded-xl shadow-md overflow-hidden">
+            <div className="bg-[#dbf0dd] px-6 py-4">
+              <h2 className="text-xl font-bold text-[#28595a] flex items-center">
+                <BookOpen size={20} className="mr-2" />
+                Resources
+              </h2>
+            </div>
+            <div className="p-6">
+              <ul className="space-y-4 mb-8">
+                {course.resources.map((res, index) => (
+                  <li key={index} className="group">
+                    <a 
+                      href={res.link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center p-3 rounded-lg border border-gray-100 hover:border-[#28595a] hover:bg-[#f0f8f0] transition-all"
+                    >
+                      <ExternalLink size={18} className="text-[#28595a] mr-3" />
+                      <span className="text-gray-700 group-hover:text-[#28595a] font-medium">{res.name}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+
+              <h3 className="text-lg font-bold text-gray-800 flex items-center mb-4">
+                <HelpCircle size={18} className="text-[#28595a] mr-2" />
+                Assessment Quizzes
+              </h3>
+              <ul className="space-y-4">
+                {course.quizzes.map((quiz, index) => (
+                  <li key={index} className="group">
+                    <Link 
+                      to={quiz.link} 
+                      className="flex items-center p-3 rounded-lg border border-gray-100 hover:border-[#28595a] hover:bg-[#f0f8f0] transition-all"
+                    >
+                      <div className="w-8 h-8 bg-[#dbf0dd] rounded-full flex items-center justify-center text-[#28595a] mr-3">
+                        Q
+                      </div>
+                      <span className="text-gray-700 group-hover:text-[#28595a] font-medium">{quiz.title}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
 
         {/* Video Lectures Section */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-semibold text-gray-800 flex items-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-            </svg>
-            Video Lectures
-          </h2>
-          <ul className="space-y-3">
-            {course.videos.map((vid, index) => (
-              <li key={index} className="group">
-                <a 
-                  href={vid.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center p-3 rounded-md hover:bg-blue-50 transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span className="text-blue-600 group-hover:text-blue-700 font-medium">{vid.title}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
+        <div className="mt-10 bg-white rounded-xl shadow-md overflow-hidden">
+          <div className="bg-[#dbf0dd] px-6 py-4">
+            <h2 className="text-xl font-bold text-[#28595a] flex items-center">
+              <Video size={20} className="mr-2" />
+              Video Lectures
+            </h2>
+          </div>
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {course.videos.map((vid, index) => (
+                <div key={index} className="group relative">
+                  <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
+                    <div className="absolute inset-0 bg-gray-800 opacity-40 group-hover:opacity-50 transition-opacity"></div>
+                    <Play size={48} className="text-white relative z-10" />
+                  </div>
+                  <div className="mt-3">
+                    <a 
+                      href={vid.link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-[#28595a] font-medium group-hover:text-[#ff8400] transition-colors flex items-center"
+                    >
+                      {vid.title}
+                      <ExternalLink size={16} className="ml-2" />
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Course Progress Section */}
+        <div className="mt-10 bg-white rounded-xl shadow-md overflow-hidden">
+          <div className="p-6">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">Your Progress</h2>
+            <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
+              <div className="bg-[#28595a] h-4 rounded-full" style={{ width: '25%' }}></div>
+            </div>
+            <div className="flex justify-between text-sm text-gray-600">
+              <span>25% Complete</span>
+              <span>1/4 Modules</span>
+            </div>
+            <div className="mt-6 flex items-center justify-between">
+              <Link 
+                to="/courses" 
+                className="inline-flex items-center px-4 py-2 border border-[#28595a] text-[#28595a] hover:bg-[#28595a] hover:text-white font-medium rounded-lg transition-colors"
+              >
+                <ChevronLeft size={18} className="mr-1" />
+                Back to Courses
+              </Link>
+              
+              <Link 
+                to={`/topics/${course.topics[0].slug}`} 
+                className="inline-flex items-center px-6 py-2 bg-[#ff8400] hover:bg-[#e67700] text-white font-medium rounded-lg transition-colors"
+              >
+                Continue Learning
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Back to Courses button */}
-      <div className="mt-8">
-        <Link 
-          to="/courses" 
-          className="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md transition-colors shadow-sm"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          Back to Courses
-        </Link>
-      </div>
+      {/* Audit Access Modal */}
+      {showAuditModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-[#28595a] text-white px-6 py-4 rounded-t-xl flex justify-between items-center">
+              <h3 className="text-xl font-bold">Request Audit Access</h3>
+              <button onClick={() => setShowAuditModal(false)} className="text-white hover:text-[#ff8400]">
+                <X size={24} />
+              </button>
+            </div>
+            <div className="p-6">
+              {!auditSubmitted ? (
+                <>
+                  <p className="mb-4 text-gray-700">
+                    Our Audit Access program is designed for disadvantaged students who face financial barriers. 
+                    Please provide some information to help us assess your eligibility.
+                  </p>
+                  <form onSubmit={submitAuditRequest}>
+                    <div className="mb-4">
+                      <label className="block text-gray-700 font-medium mb-2">Why are you requesting audit access?</label>
+                      <textarea 
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#28595a]"
+                        rows="4"
+                        placeholder="Please explain your current situation and why you need financial assistance..."
+                        required
+                      ></textarea>
+                    </div>
+                    
+                    <div className="mb-4">
+                      <label className="block text-gray-700 font-medium mb-2">Current educational/employment status</label>
+                      <select 
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#28595a]"
+                        required
+                      >
+                        <option value="">Select your status</option>
+                        <option value="student">Student</option>
+                        <option value="unemployed">Unemployed</option>
+                        <option value="employed-low-income">Employed (Low Income)</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+                    
+                    <div className="mb-6">
+                      <label className="flex items-start">
+                        <input type="checkbox" className="mt-1 mr-2" required />
+                        <span className="text-sm text-gray-700">
+                          I confirm that the information provided is accurate and I understand that providing false information may result in losing access to the course.
+                        </span>
+                      </label>
+                    </div>
+                    
+                    <div className="flex justify-end space-x-3">
+                      <button 
+                        type="button"
+                        onClick={() => setShowAuditModal(false)}
+                        className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                      >
+                        Cancel
+                      </button>
+                      <button 
+                        type="submit"
+                        className="px-4 py-2 bg-[#ff8400] hover:bg-[#e67700] text-white font-medium rounded-lg"
+                      >
+                        Submit Request
+                      </button>
+                    </div>
+                  </form>
+                </>
+              ) : (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-[#dbf0dd] rounded-full flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle className="text-[#28595a]" size={32} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2 text-[#28595a]">Request Submitted!</h3>
+                  <p className="text-gray-700">
+                    Thank you for your request. Our team will review your application and contact you within 48 hours.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

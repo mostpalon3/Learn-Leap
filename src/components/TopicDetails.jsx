@@ -1,6 +1,17 @@
 import React, { useState } from "react";
-import { FaReact } from "react-icons/fa";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { 
+  BookOpen, 
+  Video, 
+  FileText, 
+  ExternalLink, 
+  CheckCircle, 
+  ChevronLeft, 
+  ChevronRight,
+  HelpCircle,
+  Award,
+  DownloadCloud
+} from "lucide-react";
 
 const TopicDetail = () => {
     const { topicId } = useParams();
@@ -134,13 +145,13 @@ const TopicDetail = () => {
 
     const goToPrevTopic = () => {
         if (topic.prev) {
-            navigate(`/courses/topic/${topic.prev}`);
+            navigate(`/topics/${topic.prev}`);
             window.scrollTo(0, 0);
             setActiveTab("content");
         }
     };
 
-    // Other existing handlers and functions remain the same...
+    // Quiz handlers
     const handleAnswerSelect = (questionIndex, optionIndex) => {
         setUserAnswers({
             ...userAnswers,
@@ -180,7 +191,7 @@ const TopicDetail = () => {
                 if (inCodeBlock) {
                     // End of code block
                     renderedContent.push(
-                        <pre key={`code-${i}`} className="bg-gray-800 text-white p-4 rounded-md overflow-auto my-4">
+                        <pre key={`code-${i}`} className="bg-[#28595a] text-white p-4 rounded-lg overflow-auto my-4">
                             <code className={`language-${codeLanguage}`}>
                                 {codeContent.join('\n')}
                             </code>
@@ -206,7 +217,7 @@ const TopicDetail = () => {
             if (line.startsWith('##') && !line.startsWith('###')) {
                 const headerText = line.replace(/^##\s+/, '');
                 renderedContent.push(
-                    <h2 key={`h2-${i}`} className="text-2xl font-bold mt-8 mb-4 text-gray-800 border-b pb-2">
+                    <h2 key={`h2-${i}`} className="text-2xl font-bold mt-8 mb-4 text-[#28595a] border-b border-[#dbf0dd] pb-2">
                         {headerText}
                     </h2>
                 );
@@ -217,7 +228,7 @@ const TopicDetail = () => {
             if (line.startsWith('###')) {
                 const headerText = line.replace(/^###\s+/, '');
                 renderedContent.push(
-                    <h3 key={`h3-${i}`} className="text-xl font-semibold mt-6 mb-3 text-gray-700">
+                    <h3 key={`h3-${i}`} className="text-xl font-semibold mt-6 mb-3 text-[#28595a]">
                         {headerText}
                     </h3>
                 );
@@ -228,7 +239,7 @@ const TopicDetail = () => {
             if (line.startsWith('####')) {
                 const headerText = line.replace(/^####\s+/, '');
                 renderedContent.push(
-                    <h4 key={`h4-${i}`} className="text-lg font-semibold mt-4 mb-2 text-gray-700">
+                    <h4 key={`h4-${i}`} className="text-lg font-semibold mt-4 mb-2 text-[#28595a]">
                         {headerText}
                     </h4>
                 );
@@ -239,7 +250,7 @@ const TopicDetail = () => {
             if (line.startsWith('>')) {
                 const quoteText = line.replace(/^>\s+/, '');
                 renderedContent.push(
-                    <blockquote key={`quote-${i}`} className="border-l-4 border-blue-500 pl-4 py-2 my-4 bg-blue-50 rounded-r-md text-gray-700 italic">
+                    <blockquote key={`quote-${i}`} className="border-l-4 border-[#ff8400] pl-4 py-2 my-4 bg-[#dbf0dd] bg-opacity-50 rounded-r-md text-gray-700 italic">
                         {quoteText}
                     </blockquote>
                 );
@@ -249,7 +260,7 @@ const TopicDetail = () => {
             // Horizontal rule (---)
             if (line === '---') {
                 renderedContent.push(
-                    <hr key={`hr-${i}`} className="my-6 border-t border-gray-300" />
+                    <hr key={`hr-${i}`} className="my-6 border-t border-[#dbf0dd]" />
                 );
                 continue;
             }
@@ -263,7 +274,7 @@ const TopicDetail = () => {
                         <img 
                             src={imageUrl} 
                             alt={altText} 
-                            className="rounded-lg shadow-md max-w-full mx-auto" 
+                            className="rounded-lg shadow-md max-w-full mx-auto border border-[#dbf0dd]" 
                         />
                         {altText && altText !== "" && (
                             <p className="text-center text-sm text-gray-500 mt-2">{altText}</p>
@@ -279,7 +290,7 @@ const TopicDetail = () => {
                 const [_, number, text] = numberedListMatch;
                 renderedContent.push(
                     <div key={`ol-${i}`} className="flex items-start ml-4 my-1">
-                        <span className="font-bold text-blue-500 mr-2">{number}.</span>
+                        <span className="font-bold text-[#ff8400] mr-2">{number}.</span>
                         <span className="text-gray-700">{formatInlineText(text)}</span>
                     </div>
                 );
@@ -291,7 +302,7 @@ const TopicDetail = () => {
                 const listItemText = line.replace(/^-\s+/, '');
                 renderedContent.push(
                     <div key={`li-${i}`} className="flex items-start ml-4 my-1">
-                        <span className="text-blue-500 mr-2 font-bold">•</span>
+                        <span className="text-[#28595a] mr-2 font-bold">•</span>
                         <span className="text-gray-700">{formatInlineText(listItemText)}</span>
                     </div>
                 );
@@ -350,20 +361,20 @@ const TopicDetail = () => {
             if (inBold) {
                 currentText += text[i];
                 if (i === text.length - 1 || (text.substring(i + 1, i + 3) === '**')) {
-                    parts.push(<strong key={`bold-${i}`}>{currentText}</strong>);
+                    parts.push(<strong key={`bold-${i}`} className="text-[#28595a]">{currentText}</strong>);
                     currentText = '';
                 }
             } else if (inItalic) {
                 currentText += text[i];
                 if (i === text.length - 1 || text[i + 1] === '*') {
-                    parts.push(<em key={`italic-${i}`}>{currentText}</em>);
+                    parts.push(<em key={`italic-${i}`} className="text-gray-700">{currentText}</em>);
                     currentText = '';
                 }
             } else if (inCode) {
                 currentText += text[i];
                 if (i === text.length - 1 || text[i + 1] === '`') {
                     parts.push(
-                        <code key={`code-${i}`} className="bg-gray-100 text-purple-600 px-1 py-0.5 rounded font-mono text-sm">
+                        <code key={`code-${i}`} className="bg-[#dbf0dd] text-[#28595a] px-1 py-0.5 rounded font-mono text-sm">
                             {currentText}
                         </code>
                     );
@@ -381,208 +392,265 @@ const TopicDetail = () => {
     };
 
     return (
-        <div className="relative left-[15%] bg-[#f6fbf6] w-[85%] min-h-screen p-8">
+        <div className="relative left-[15%] bg-[#f6fbf6] w-[85%] min-h-screen py-8 px-8">
             {/* Topic Header */}
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-                <div className="flex justify-between items-start">
-                    <div>
-                        <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">{topic.title} <FaReact className="text-blue-500" /></h1>
-                        <p className="text-gray-600 mt-2">{topic.description}</p>
+            <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                <div className="bg-[#28595a] px-6 py-4 text-white">
+                    <div className="flex justify-between items-center">
+                        <h1 className="text-2xl font-bold">{topic.title}</h1>
+                        <Link 
+                            to="/courses/introduction-to-react" 
+                            className="inline-flex items-center px-3 py-1.5 bg-amber-600 bg-opacity-20 hover:bg-opacity-30 text-white rounded-lg transition-colors text-sm"
+                        >
+                            <ChevronLeft size={16} className="mr-1" />
+                            Back to Course
+                        </Link>
                     </div>
-                    <Link 
-                        to="/courses/introduction-to-react" 
-                        className="inline-flex items-center px-3 py-1.5 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-md transition-colors text-sm"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                        </svg>
-                        Back to Course
-                    </Link>
+                    <p className="text-[#dbf0dd] mt-2">{topic.description}</p>
                 </div>
 
                 {/* Tab Navigation */}
-                <div className="flex border-b mt-6">
+                <div className="flex px-6 border-b border-gray-200">
                     <button 
-                        className={`px-4 py-2 font-medium ${activeTab === 'content' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`} 
+                        className={`px-4 py-3 font-medium transition-colors ${
+                            activeTab === 'content' 
+                                ? 'text-[#28595a] border-b-2 border-[#28595a]' 
+                                : 'text-gray-500 hover:text-[#28595a]'
+                        }`} 
                         onClick={() => setActiveTab('content')}
                     >
-                        Content
+                        <div className="flex items-center">
+                            <FileText size={18} className="mr-2" />
+                            Content
+                        </div>
                     </button>
                     <button 
-                        className={`px-4 py-2 font-medium ${activeTab === 'video' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`} 
+                        className={`px-4 py-3 font-medium transition-colors ${
+                            activeTab === 'video' 
+                                ? 'text-[#28595a] border-b-2 border-[#28595a]' 
+                                : 'text-gray-500 hover:text-[#28595a]'
+                        }`} 
                         onClick={() => setActiveTab('video')}
                     >
-                        Video
+                        <div className="flex items-center">
+                            <Video size={18} className="mr-2" />
+                            Video
+                        </div>
                     </button>
                     <button 
-                        className={`px-4 py-2 font-medium ${activeTab === 'quiz' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`} 
+                        className={`px-4 py-3 font-medium transition-colors ${
+                            activeTab === 'quiz' 
+                                ? 'text-[#28595a] border-b-2 border-[#28595a]' 
+                                : 'text-gray-500 hover:text-[#28595a]'
+                        }`} 
                         onClick={() => setActiveTab('quiz')}
                     >
-                        Quiz
+                        <div className="flex items-center">
+                            <HelpCircle size={18} className="mr-2" />
+                            Quiz
+                        </div>
                     </button>
                     <button 
-                        className={`px-4 py-2 font-medium ${activeTab === 'resources' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`} 
+                        className={`px-4 py-3 font-medium transition-colors ${
+                            activeTab === 'resources' 
+                                ? 'text-[#28595a] border-b-2 border-[#28595a]' 
+                                : 'text-gray-500 hover:text-[#28595a]'
+                        }`} 
                         onClick={() => setActiveTab('resources')}
                     >
-                        Resources
+                        <div className="flex items-center">
+                            <BookOpen size={18} className="mr-2" />
+                            Resources
+                        </div>
                     </button>
                 </div>
             </div>
 
             {/* Content Panel */}
-            <div className="bg-white rounded-lg shadow-md p-6">
-                {activeTab === 'content' && (
-                    <div className="prose max-w-none">
-                        {renderContent(topic.content)}
-                    </div>
-                )}
+            <div className="bg-white rounded-xl shadow-md overflow-hidden">
+                <div className="p-6">
+                    {activeTab === 'content' && (
+                        <div className="prose max-w-none">
+                            {renderContent(topic.content)}
+                        </div>
+                    )}
 
-                {/* Rest of the tabs remain the same */}
-                {activeTab === 'video' && (
-                    <div>
-                        {topic.video ? (
-                            <div className="aspect-w-16 aspect-h-9">
-                                <iframe 
-                                    src={topic.video} 
-                                    className="w-full h-[500px] rounded-lg"
-                                    title={topic.title}
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowFullScreen
-                                ></iframe>
-                            </div>
-                        ) : (
-                            <div className="text-center py-12 text-gray-500">
-                                No video available for this topic.
-                            </div>
-                        )}
-                    </div>
-                )}
+                    {activeTab === 'video' && (
+                        <div>
+                            {topic.video ? (
+                                <div className="aspect-w-16 aspect-h-9">
+                                    <iframe 
+                                        src={topic.video} 
+                                        className="w-full h-[500px] rounded-lg border border-[#dbf0dd]"
+                                        title={topic.title}
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                        allowFullScreen
+                                    ></iframe>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center py-16 text-gray-500">
+                                    <Video size={48} className="text-[#dbf0dd] mb-4" />
+                                    <p>No video available for this topic.</p>
+                                </div>
+                            )}
+                        </div>
+                    )}
 
-                {activeTab === 'quiz' && (
-                    <div>
-                        {topic.quiz && topic.quiz.length > 0 ? (
-                            <div>
-                                <h2 className="text-xl font-semibold mb-6">Topic Quiz</h2>
-                                {quizSubmitted ? (
-                                    <div className="bg-blue-50 p-4 rounded-lg mb-6">
-                                        <h3 className="text-lg font-medium text-blue-800">Quiz Results</h3>
-                                        <p className="text-blue-700 mt-2">You scored {calculateScore()} out of {topic.quiz.length}.</p>
-                                    </div>
-                                ) : null}
-                                
-                                {topic.quiz.map((question, qIndex) => (
-                                    <div key={qIndex} className="mb-6 p-4 border rounded-lg">
-                                        <h3 className="font-medium text-lg mb-3">{qIndex + 1}. {question.question}</h3>
-                                        <div className="space-y-2">
-                                            {question.options.map((option, oIndex) => (
-                                                <div key={oIndex} className="flex items-center">
-                                                    <input 
-                                                        type="radio" 
-                                                        id={`q${qIndex}-o${oIndex}`} 
-                                                        name={`question-${qIndex}`} 
-                                                        className="mr-3 h-4 w-4 text-blue-600"
-                                                        checked={userAnswers[qIndex] === oIndex}
-                                                        onChange={() => handleAnswerSelect(qIndex, oIndex)}
-                                                        disabled={quizSubmitted}
-                                                    />
-                                                    <label 
-                                                        htmlFor={`q${qIndex}-o${oIndex}`} 
-                                                        className={`${quizSubmitted && oIndex === question.answer ? 'text-green-600 font-medium' : ''} 
-                                                                            ${quizSubmitted && userAnswers[qIndex] === oIndex && oIndex !== question.answer ? 'text-red-600 font-medium' : ''}`}
-                                                    >
-                                                        {option}
-                                                    </label>
+                    {activeTab === 'quiz' && (
+                        <div>
+                            {topic.quiz && topic.quiz.length > 0 ? (
+                                <div>
+                                    <h2 className="text-xl font-semibold mb-6 text-[#28595a] flex items-center">
+                                        <HelpCircle size={20} className="mr-2" />
+                                        Topic Quiz
+                                    </h2>
+                                    
+                                    {quizSubmitted ? (
+                                        <div className="bg-[#dbf0dd] p-6 rounded-xl mb-6">
+                                            <h3 className="text-lg font-bold text-[#28595a] mb-2 flex items-center">
+                                                <Award size={20} className="mr-2" />
+                                                Quiz Results
+                                            </h3>
+                                            <p className="text-gray-700">
+                                                You scored <span className="font-bold text-[#28595a]">{calculateScore()}</span> out of <span className="font-bold">{topic.quiz.length}</span>.
+                                            </p>
+                                            
+                                            {calculateScore() === topic.quiz.length && (
+                                                <div className="mt-4 flex items-center text-[#28595a]">
+                                                    <CheckCircle size={18} className="mr-2" />
+                                                    <span className="font-medium">Perfect score! Great job!</span>
                                                 </div>
-                                            ))}
+                                            )}
                                         </div>
-                                        {quizSubmitted && (
-                                            <div className="mt-3 text-sm">
-                                                {userAnswers[qIndex] === question.answer ? 
-                                                    <p className="text-green-600">Correct!</p> : 
-                                                    <p className="text-red-600">Incorrect. The correct answer is: {question.options[question.answer]}</p>
-                                                }
+                                    ) : null}
+                                    
+                                    {topic.quiz.map((question, qIndex) => (
+                                        <div key={qIndex} className="mb-6 p-6 border border-[#dbf0dd] rounded-xl">
+                                            <h3 className="font-medium text-lg mb-4 text-[#28595a]">{qIndex + 1}. {question.question}</h3>
+                                            <div className="space-y-3">
+                                                {question.options.map((option, oIndex) => (
+                                                    <div key={oIndex} className="flex items-center p-3 rounded-lg transition-colors hover:bg-[#f6fbf6]">
+                                                        <input 
+                                                            type="radio" 
+                                                            id={`q${qIndex}-o${oIndex}`} 
+                                                            name={`question-${qIndex}`} 
+                                                            className="mr-3 h-4 w-4 text-[#28595a] focus:ring-[#28595a]"
+                                                            checked={userAnswers[qIndex] === oIndex}
+                                                            onChange={() => handleAnswerSelect(qIndex, oIndex)}
+                                                            disabled={quizSubmitted}
+                                                        />
+                                                        <label 
+                                                            htmlFor={`q${qIndex}-o${oIndex}`} 
+                                                            className={`flex-1 ${
+                                                                quizSubmitted && oIndex === question.answer 
+                                                                    ? 'text-green-600 font-medium' 
+                                                                    : quizSubmitted && userAnswers[qIndex] === oIndex && oIndex !== question.answer 
+                                                                    ? 'text-red-600 font-medium' 
+                                                                    : 'text-gray-700'
+                                                            }`}
+                                                        >
+                                                            {option}
+                                                        </label>
+                                                        {quizSubmitted && oIndex === question.answer && (
+                                                            <CheckCircle size={18} className="text-green-500 ml-2" />
+                                                        )}
+                                                    </div>
+                                                ))}
                                             </div>
-                                        )}
-                                    </div>
-                                ))}
-                                
-                                {!quizSubmitted && (
-                                    <button 
-                                        className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md transition-colors shadow-sm"
-                                        onClick={handleSubmitQuiz}
-                                    >
-                                        Submit Quiz
-                                    </button>
-                                )}
-                            </div>
-                        ) : (
-                            <div className="text-center py-12 text-gray-500">
-                                No quiz available for this topic.
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {activeTab === 'resources' && (
-                    <div>
-                        <h2 className="text-xl font-semibold mb-4">Additional Resources</h2>
-                        {topic.resources && topic.resources.length > 0 ? (
-                            <ul className="space-y-3">
-                                {topic.resources.map((resource, index) => (
-                                    <li key={index} className="group">
-                                        <a 
-                                            href={resource.url} 
-                                            target="_blank" 
-                                            rel="noopener noreferrer"
-                                            className="flex items-center p-3 rounded-md hover:bg-blue-50 transition-colors"
+                                            {quizSubmitted && userAnswers[qIndex] !== question.answer && (
+                                                <div className="mt-4 text-sm p-3 bg-red-50 text-red-700 rounded-lg">
+                                                    <p className="font-medium">Incorrect.</p>
+                                                    <p>The correct answer is: {question.options[question.answer]}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                    
+                                    {!quizSubmitted && (
+                                        <button 
+                                            className="px-6 py-3 bg-[#ff8400] hover:bg-[#e67700] text-white font-medium rounded-lg transition-colors shadow-sm flex items-center"
+                                            onClick={handleSubmitQuiz}
                                         >
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                            </svg>
-                                            <span className="text-blue-600 group-hover:text-blue-700 font-medium">{resource.name}</span>
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <div className="text-center py-12 text-gray-500">
-                                No additional resources available for this topic.
-                            </div>
-                        )}
-                    </div>
-                )}
+                                            <CheckCircle size={18} className="mr-2" />
+                                            Submit Quiz
+                                        </button>
+                                    )}
+                                </div>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center py-16 text-gray-500">
+                                    <HelpCircle size={48} className="text-[#dbf0dd] mb-4" />
+                                    <p>No quiz available for this topic.</p>
+                                </div>
+                            )}
+                        </div>
+                    )}
 
-                {/* Topic Navigation */}
-                <div className="flex justify-between mt-8 pt-6 border-t">
-                    <button
-                        onClick={goToPrevTopic}
-                        className={`flex items-center px-4 py-2 rounded-md transition-colors ${
-                            topic.prev 
-                                ? 'bg-blue-500 text-white hover:bg-blue-600' 
-                                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                        }`}
-                        disabled={!topic.prev}
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
-                        Previous Topic
-                    </button>
-                    
-                    <button
-                        onClick={goToNextTopic}
-                        className={`flex items-center px-4 py-2 rounded-md transition-colors ${
-                            topic.next 
-                                ? 'bg-blue-500 text-white hover:bg-blue-600' 
-                                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                        }`}
-                        disabled={!topic.next}
-                    >
-                        Next Topic
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
+                    {activeTab === 'resources' && (
+                        <div>
+                            <h2 className="text-xl font-semibold mb-6 text-[#28595a] flex items-center">
+                                <BookOpen size={20} className="mr-2" />
+                                Additional Resources
+                            </h2>
+                            
+                            {topic.resources && topic.resources.length > 0 ? (
+                                <div className="space-y-4">
+                                    {topic.resources.map((resource, index) => (
+                                        <div key={index} className="group border border-[#dbf0dd] rounded-xl overflow-hidden">
+                                            <a 
+                                                href={resource.url} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="flex items-center p-4 hover:bg-[#dbf0dd] hover:bg-opacity-30 transition-colors"
+                                            >
+                                                <div className="w-10 h-10 bg-[#dbf0dd] rounded-lg flex items-center justify-center mr-4 text-[#28595a] flex-shrink-0">
+                                                    <DownloadCloud size={20} />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <h3 className="text-[#28595a] font-medium group-hover:text-[#28595a]/80 transition-colors">{resource.name}</h3>
+                                                    <p className="text-sm text-gray-500">External resource</p>
+                                                </div>
+                                                <ExternalLink size={16} className="text-[#28595a] ml-2" />
+                                            </a>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center py-16 text-gray-500">
+                                    <BookOpen size={48} className="text-[#dbf0dd] mb-4" />
+                                    <p>No additional resources available for this topic.</p>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Topic Navigation */}
+                    <div className="flex justify-between mt-8 pt-6 border-t border-[#dbf0dd]">
+                        <button
+                            onClick={goToPrevTopic}
+                            className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
+                                topic.prev 
+                                    ? 'bg-[#28595a] text-white hover:bg-[#1e4445]' 
+                                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                            }`}
+                            disabled={!topic.prev}
+                        >
+                            <ChevronLeft size={18} className="mr-2" />
+                            Previous Topic
+                        </button>
+                        
+                        <button
+                            onClick={goToNextTopic}
+                            className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
+                                topic.next 
+                                    ? 'bg-[#ff8400] text-white hover:bg-[#e67700]' 
+                                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                            }`}
+                            disabled={!topic.next}
+                        >
+                            Next Topic
+                            <ChevronRight size={18} className="ml-2" />
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -20,12 +20,15 @@ import {
   Sparkles
 } from "lucide-react";
 import logo from "../assets/images/profile-vector.png";
+import { useNavigate } from "react-router-dom";
 
 function Sidebar() {
   const [user, setUser] = useState(null);
   const [visible, setVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+
+  const navigate = useNavigate();
   
   // set visible to false if url is /sigup, /login, /chat, /quiz
   useEffect(() => {
@@ -45,6 +48,7 @@ function Sidebar() {
 
   const handleLogout = async () => {
     await signOut(auth);
+    navigate('/');
     toast.success('Logout successful!')
   };
 
