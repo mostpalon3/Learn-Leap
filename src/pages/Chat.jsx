@@ -25,7 +25,7 @@ export default function Chat() {
     
     try {
       // Call backend API
-      const response = await fetch('http://localhost:3001/ask', {
+      const response = await fetch('http://localhost:3000/ask', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
