@@ -38,9 +38,13 @@ function Sidebar({ open, setOpen }) {
         </button>
         <div className="text-center flex flex-col items-center justify-center h-full gap-8">
             <Link to="/about">About</Link>
-            <Link to="/courses">Courses</Link>
             {user ? (
               <>
+              <Link to="/courses">Courses</Link>
+              <Link to="/pdf-to-quiz">
+              Quiz <br />
+              Generator
+              </Link>
               <Link to="/feed">Feed</Link>
               <Link to="/profile">Profile</Link>
               <button onClick={handleLogout} className="cursor-pointer">Logout</button>

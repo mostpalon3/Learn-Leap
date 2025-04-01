@@ -11,7 +11,7 @@ function Layout() {
       {/* <Navbar /> */}
       <Sidebar />
       {<Outlet />}
-      {location.pathname !== "/profile" && location.pathname !== "/courses" && <Footer />}
+      {location.pathname !== "/profile" && location.pathname !== "/courses" && location.pathname !== "/pdf-to-quiz" && <Footer />}
       <FloatingChatbot />
     </div>
   )

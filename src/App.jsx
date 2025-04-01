@@ -17,6 +17,7 @@ import CourseDetail from "./components/CourseDetail";
 import Chat from "./pages/Chat";
 import Sidebar from "./components/Sidebar";
 import TopicDetail from "./components/TopicDetails";
+import PdfQuizGenerator from "./components/PdfQuizGenerator";
 
 function App() {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/courses" element={<Courses />} />
+          <Route path="/pdf-to-quiz" element={<PdfQuizGenerator />} />
           <Route path="/courses/introduction-to-react" element={<CourseDetail />} />
           <Route path="/topics/:topicId" element={<TopicDetail />} />
           <Route path="/profile" element={<Profile />} />
