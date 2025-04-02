@@ -1,3 +1,5 @@
+const url = "https://learn-leap-1.onrender.com";
+
 /**
  * Generates a quiz from text content using Gemini AI via backend service
  * @param {string} content - The text content to generate a quiz from
@@ -5,8 +7,10 @@
  * @returns {Promise<Array>} - Array of quiz questions
  */
 export const generateQuizFromContent = async (content, questionCount = 5) => {
+
+  console.log(url);
   try {
-    const response = await fetch('http://localhost:5001/api/generate-quiz', {
+    const response = await fetch(`${url}/api/generate-quiz`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -33,7 +37,7 @@ export const generateQuizFromContent = async (content, questionCount = 5) => {
  */
 export const analyzeContentForQuiz = async (content) => {
   try {
-    const response = await fetch('http://localhost:5001/api/analyze-content', {
+    const response = await fetch(`${url}/api/analyze-content`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

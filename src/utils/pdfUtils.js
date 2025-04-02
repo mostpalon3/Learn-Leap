@@ -1,15 +1,16 @@
+  const url = "https://learn-leap-1.onrender.com";
 /**
  * Extract text from a PDF file using backend service
  * 
- * @param {File} pdfFile - The PDF file to extract text from
- * @returns {Promise<Object>} - Object with extracted text and complexity analysis
+ * @param {File} pdfFile 
+ * @returns {Promise<Object>}
  */
 export const extractTextFromPDF = async (pdfFile) => {
   try {
     const formData = new FormData();
     formData.append('pdf', pdfFile);
     
-    const response = await fetch('http://localhost:5001/api/parse-pdf', {
+    const response = await fetch(`${url}/api/parse-pdf`, {
       method: 'POST',
       body: formData,
     });
