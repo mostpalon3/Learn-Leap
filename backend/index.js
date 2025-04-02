@@ -121,6 +121,7 @@ app.post('/api/generate-quiz', async (req, res) => {
   }
 });
 
+
 // Function to clean extracted text
 function cleanExtractedText(text) {
   return text
@@ -175,7 +176,7 @@ function analyzeContentComplexity(text) {
 async function analyzeContentForQuiz(content) {
   try {
     // Get Gemini model
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     
     // Create prompt for content analysis
     const prompt = `
@@ -218,7 +219,7 @@ async function analyzeContentForQuiz(content) {
 async function generateQuizFromContent(content, questionCount = 5) {
   try {
     // Get Gemini model
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     
     // Prepare content - limit length and extract key information
     let limitedContent = content;
