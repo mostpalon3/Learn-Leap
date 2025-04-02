@@ -8,6 +8,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 require('dotenv').config();
 
 // Initialize Google Generative AI
+// const genAI = new GoogleGenerativeAI('AIzaSyDEjGf5mHgDZ2VSsbaVwOisZZ5wcvn6AVA');
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY);
 
 const app = express();
