@@ -19,13 +19,16 @@ import {
   X
 } from 'lucide-react';
 
+import mathwiz from '../assets/images/Feed-react.jpeg'
+import feedreact from "../assets/images/mathwiz.jpeg"
+
 const Feed = () => {
   const [posts, setPosts] = useState([
     {
       id: 1,
       user: { name: 'Deepesh', avatar: 'D', bio: 'Frontend Enthusiast | React Dev' },
       content: 'Just completed a React-based feed for our AI learning platform! Feeling on top of the world.',
-      image: 'https://via.placeholder.com/600x400?text=React+Project',
+      image: feedreact,
       type: 'update',
       timestamp: '2h ago',
       likes: 17,
@@ -39,7 +42,7 @@ const Feed = () => {
       id: 2,
       user: { name: 'Aryan', avatar: 'A', bio: 'Chat Feature Lead | AI Enthusiast' },
       content: 'Unlocked "Math Wizard" badge after scoring 100% on the algebra quiz! Hard work pays off.',
-      image: 'https://via.placeholder.com/600x400?text=Math+Wizard+Badge',
+      image: mathwiz,
       type: 'achievement',
       timestamp: '1h ago',
       likes: 10,
