@@ -13,6 +13,8 @@ export default function Chat() {
   const fileInputRef = useRef(null);
   const messagesEndRef = useRef(null);
 
+  const url = "https://learn-leap-2.onrender.com";
+
   // Auto-scroll to bottom of messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -46,7 +48,7 @@ export default function Chat() {
         formData.append('pdfFile', pdfFile);
         formData.append('prompt', userQuestion);
         
-        response = await fetch('http://localhost:3000/askpdf', {
+        response = await fetch(`${url}/askpdf`, {
           method: 'POST',
           body: formData,
         });
@@ -55,7 +57,7 @@ export default function Chat() {
         setPdfFile(null);
       } else {
         // Regular text query
-        response = await fetch('http://localhost:3000/ask', {
+        response = await fetch(`${url}/ask`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
