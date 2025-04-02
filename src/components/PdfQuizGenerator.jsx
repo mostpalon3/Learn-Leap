@@ -14,13 +14,21 @@ import {
   BookOpen,
   Trophy,
   Timer,
-  Eye
+  Eye,
+  BarChart,
+  FileType
 } from 'lucide-react';
+import { extractTextFromPDF, cleanExtractedText } from '../utils/pdfUtils';
+import { generateQuizFromContent, analyzeContentForQuiz } from '../services/geminiService';
 
 const PdfQuizGenerator = () => {
   const [file, setFile] = useState(null);
   const [fileContent, setFileContent] = useState('');
+  const [contentAnalysis, setContentAnalysis] = useState(null);
+  const [contentComplexity, setContentComplexity] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('');
+  const [error, setError] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [quizStarted, setQuizStarted] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -28,102 +36,64 @@ const PdfQuizGenerator = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [score, setScore] = useState(0);
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [pdfMeta, setPdfMeta] = useState(null);
   const timerRef = useRef(null);
   const fileInputRef = useRef(null);
 
-  const handleFileUpload = (event) => {
+  const handleFileUpload = async (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile && selectedFile.type === 'application/pdf') {
       setFile(selectedFile);
-      simulatePdfExtraction(selectedFile);
+      setIsLoading(true);
+      setLoadingMessage('Processing PDF...');
+      setError(null);
+      
+      try {
+        // Use the backend service to extract text and analyze complexity
+        const result = await extractTextFromPDF(selectedFile);
+        const cleanedText = cleanExtractedText(result.text);
+        setFileContent(cleanedText);
+        
+        // Set complexity from backend analysis
+        setContentComplexity(result.complexity);
+        
+        // Store PDF metadata
+        setPdfMeta(result.meta);
+        
+        // Analyze content to get key concepts
+        setLoadingMessage('Analyzing content with AI...');
+        const analysis = await analyzeContentForQuiz(cleanedText);
+        setContentAnalysis(analysis);
+      } catch (err) {
+        setError(`Error processing PDF: ${err.message}`);
+        console.error('PDF processing error:', err);
+      } finally {
+        setIsLoading(false);
+      }
     } else {
-      alert('Please upload a PDF file');
+      setError('Please upload a PDF file');
     }
   };
 
-  const simulatePdfExtraction = (pdfFile) => {
+  // Generate quiz using Gemini AI
+  const generateQuiz = async () => {
     setIsLoading(true);
-    setTimeout(() => {
-      setFileContent(`
-        OPERATING SYSTEM CONTENT:
-        • Process states and life cycle: new, ready, running, waiting, terminated
-        • Kernel vs User level threads
-        • Process vs Threads comparison
-        • Multithreading models
-        • CPU scheduling concepts, metrics, methods
-      `);
-      setIsLoading(false);
-    }, 1500);
-  };
-
-  // Simulate Gemini Flash 2.0 quiz generation
-  const generateQuiz = () => {
-    setIsLoading(true);
+    setLoadingMessage('Generating questions with AI...');
+    setError(null);
     
-    // Simulate API call to Gemini Flash 2.0
-    setTimeout(() => {
-      const generatedQuestions = [
-        {
-          id: 1,
-          question: "Which of the following is NOT a process state in the process life cycle model?",
-          options: ["New", "Ready", "Running", "Blocked", "Waiting"],
-          correctAnswer: "Blocked",
-          explanation: "The process states mentioned are: new, ready, running, waiting, and terminated. 'Blocked' was not mentioned as a state."
-        },
-        {
-          id: 2,
-          question: "What is a thread in an operating system?",
-          options: [
-            "The process of switching between multiple programs",
-            "The smallest unit of processing that can be performed in an OS",
-            "A standalone application running in memory",
-            "A part of memory allocated to a process"
-          ],
-          correctAnswer: "The smallest unit of processing that can be performed in an OS",
-          explanation: "A thread is defined as the smallest unit of processing that can be performed in an OS."
-        },
-        {
-          id: 3,
-          question: "Which multithreading model maps many user-level threads to one kernel thread?",
-          options: [
-            "One-to-one model",
-            "Many-to-one model",
-            "Many-to-many model",
-            "One-to-many model"
-          ],
-          correctAnswer: "Many-to-one model",
-          explanation: "The many-to-one model maps many user levels threads to one kernel thread."
-        },
-        {
-          id: 4,
-          question: "What is the main difference between a process and a thread?",
-          options: [
-            "Processes are heavyweight, threads are lightweight",
-            "Processes can share data, threads cannot",
-            "Processes are faster to create than threads",
-            "Processes require less time for context switching"
-          ],
-          correctAnswer: "Processes are heavyweight, threads are lightweight",
-          explanation: "Processes are heavyweight while threads are lightweight."
-        },
-        {
-          id: 5,
-          question: "Under which circumstances is CPU scheduling non-preemptive?",
-          options: [
-            "When a process switches from running to waiting state",
-            "When a process terminates",
-            "When a process switches from running to ready state",
-            "Both A and B",
-            "Both A and C"
-          ],
-          correctAnswer: "Both A and B",
-          explanation: "Scheduling is non-preemptive when a process switches from running to waiting or when a process terminates."
-        }
-      ];
+    try {
+      // Generate questions based on content complexity
+      const questionCount = contentComplexity?.complexityLevel === 'Basic' ? 5 : 
+                           contentComplexity?.complexityLevel === 'Intermediate' ? 7 : 10;
       
+      const generatedQuestions = await generateQuizFromContent(fileContent, questionCount);
       setQuestions(generatedQuestions);
+    } catch (err) {
+      setError(`Failed to generate quiz: ${err.message}`);
+      console.error('Quiz generation error:', err);
+    } finally {
       setIsLoading(false);
-    }, 2000);
+    }
   };
 
   // Start the quiz
@@ -182,6 +152,18 @@ const PdfQuizGenerator = () => {
     fileInputRef.current.click();
   };
 
+  // Reset the entire process
+  const resetProcess = () => {
+    setFile(null);
+    setFileContent('');
+    setContentAnalysis(null);
+    setContentComplexity(null);
+    setQuestions([]);
+    setQuizStarted(false);
+    setQuizCompleted(false);
+    setError(null);
+  };
+
   // Clean up timer on unmount
   useEffect(() => {
     return () => {
@@ -197,6 +179,11 @@ const PdfQuizGenerator = () => {
   const progressPercentage = quizStarted && !quizCompleted 
     ? ((currentQuestionIndex + 1) / questions.length) * 100 
     : 0;
+
+  // Create a preview of the content (limit length)
+  const contentPreview = fileContent.length > 500 
+    ? fileContent.substring(0, 500) + '...' 
+    : fileContent;
 
   return (
     <div className="flex relative left-[15%] bg-[#f6fbf6] w-[85%] min-h-screen max-h-full items-center py-8 px-8">
@@ -243,6 +230,15 @@ const PdfQuizGenerator = () => {
                     <p className="mt-4 text-xs text-gray-500">
                       Supported format: PDF (Max size: 10MB)
                     </p>
+                    
+                    {error && (
+                      <div className="mt-4 text-red-500 bg-red-50 px-4 py-2 rounded-md">
+                        <div className="flex items-center">
+                          <XCircle className="h-4 w-4 mr-2" />
+                          {error}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="space-y-6">
@@ -255,12 +251,47 @@ const PdfQuizGenerator = () => {
                         <p className="text-sm text-gray-500">{(file.size / (1024 * 1024)).toFixed(2)} MB</p>
                       </div>
                       <button 
-                        onClick={() => setFile(null)}
+                        onClick={resetProcess}
                         className="text-gray-500 hover:text-red-500 transition-colors"
                       >
                         <XCircle className="h-5 w-5" />
                       </button>
                     </div>
+                    
+                    {contentComplexity && (
+                      <div className="p-4 bg-white rounded-lg border border-[#dbf0dd]">
+                        <h3 className="font-semibold text-[#28595a] mb-2 flex items-center">
+                          <BarChart className="h-4 w-4 mr-2" />
+                          Content Analysis
+                        </h3>
+                        <div className="grid grid-cols-2 gap-3 mb-3">
+                          <div className="bg-[#f6fbf6] p-3 rounded-lg">
+                            <p className="text-xs text-gray-500">Complexity Level</p>
+                            <p className="text-lg font-medium text-[#28595a]">
+                              {contentComplexity.complexityLevel}
+                            </p>
+                          </div>
+                          <div className="bg-[#f6fbf6] p-3 rounded-lg">
+                            <p className="text-xs text-gray-500">Reading Time</p>
+                            <p className="text-lg font-medium text-[#28595a]">
+                              {contentComplexity.readingTimeMinutes} min
+                            </p>
+                          </div>
+                          <div className="bg-[#f6fbf6] p-3 rounded-lg">
+                            <p className="text-xs text-gray-500">Word Count</p>
+                            <p className="text-lg font-medium text-[#28595a]">
+                              {contentComplexity.wordCount.toLocaleString()}
+                            </p>
+                          </div>
+                          <div className="bg-[#f6fbf6] p-3 rounded-lg">
+                            <p className="text-xs text-gray-500">Average Sentence Length</p>
+                            <p className="text-lg font-medium text-[#28595a]">
+                              {contentComplexity.avgSentenceLength} words
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                     
                     {fileContent && (
                       <div className="p-4 bg-white rounded-lg border border-[#dbf0dd]">
@@ -268,8 +299,51 @@ const PdfQuizGenerator = () => {
                           <Eye className="h-4 w-4 mr-2" />
                           Content Preview
                         </h3>
-                        <div className="bg-[#f6fbf6] p-3 rounded text-gray-700 text-sm font-mono whitespace-pre-line">
-                          {fileContent}
+                        <div className="bg-[#f6fbf6] p-3 rounded text-gray-700 text-sm font-mono whitespace-pre-line max-h-40 overflow-y-auto">
+                          {contentPreview}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {contentAnalysis && (
+                      <div className="p-4 bg-white rounded-lg border border-[#dbf0dd]">
+                        <h3 className="font-semibold text-[#28595a] mb-2 flex items-center">
+                          <Brain className="h-4 w-4 mr-2" />
+                          Content Topics
+                        </h3>
+                        <div className="space-y-3">
+                          <div>
+                            <h4 className="text-sm font-medium text-[#28595a]">Main Topics:</h4>
+                            <div className="flex flex-wrap gap-2 mt-1">
+                              {contentAnalysis.mainTopics?.map((topic, index) => (
+                                <span key={index} className="bg-[#dbf0dd] text-[#28595a] text-xs px-2 py-1 rounded-full">
+                                  {topic}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                          
+                          <div>
+                            <h4 className="text-sm font-medium text-[#28595a]">Key Concepts:</h4>
+                            <ul className="list-disc list-inside text-sm text-gray-700 ml-2">
+                              {contentAnalysis.keyConcepts?.map((concept, index) => (
+                                <li key={index}>{concept}</li>
+                              ))}
+                            </ul>
+                          </div>
+                          
+                          {contentAnalysis.keyTerms && contentAnalysis.keyTerms.length > 0 && (
+                            <div>
+                              <h4 className="text-sm font-medium text-[#28595a]">Key Terms:</h4>
+                              <div className="flex flex-wrap gap-1 mt-1">
+                                {contentAnalysis.keyTerms.map((term, index) => (
+                                  <span key={index} className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-md">
+                                    {term}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
@@ -296,6 +370,15 @@ const PdfQuizGenerator = () => {
                       </div>
                     )}
                     
+                    {error && (
+                      <div className="text-red-500 bg-red-50 px-4 py-2 rounded-md">
+                        <div className="flex items-center">
+                          <XCircle className="h-4 w-4 mr-2" />
+                          {error}
+                        </div>
+                      </div>
+                    )}
+                    
                     {questions.length > 0 && (
                       <div className="mt-6 bg-[#dbf0dd] p-6 rounded-lg border border-[#dbf0dd]">
                         <div className="flex items-center mb-3">
@@ -303,9 +386,14 @@ const PdfQuizGenerator = () => {
                           <h3 className="text-lg font-semibold text-[#28595a]">Quiz Ready!</h3>
                         </div>
                         
-                        <p className="mb-4 text-gray-700">
-                          Your AI-generated quiz contains {questions.length} questions based on the PDF content. Ready to test your knowledge?
+                        <p className="mb-2 text-gray-700">
+                          Your AI-generated quiz contains {questions.length} questions based on the "{contentAnalysis?.mainTopics?.[0] || 'uploaded content'}".
                         </p>
+                        
+                        <div className="mb-4 bg-white rounded-lg p-3 border border-[#28595a] text-sm">
+                          <p className="text-[#28595a] font-medium">Difficulty: {contentComplexity?.complexityLevel || 'Intermediate'}</p>
+                          <p className="text-gray-600">Estimated completion time: {Math.ceil(questions.length * 1.5)} minutes</p>
+                        </div>
                         
                         <button 
                           onClick={startQuiz}
@@ -410,7 +498,7 @@ const PdfQuizGenerator = () => {
                   
                   <h3 className="text-2xl font-bold text-[#28595a]">Quiz Completed!</h3>
                   <p className="text-gray-600">
-                    Great job completing the quiz on Operating Systems
+                    Great job completing the quiz on {contentAnalysis?.mainTopics?.[0] || 'the uploaded content'}
                   </p>
                 </div>
                 
@@ -527,13 +615,7 @@ const PdfQuizGenerator = () => {
                 {/* Action buttons */}
                 <div className="flex gap-4 justify-center">
                   <button
-                    onClick={() => {
-                      setFile(null);
-                      setFileContent('');
-                      setQuestions([]);
-                      setQuizStarted(false);
-                      setQuizCompleted(false);
-                    }}
+                    onClick={resetProcess}
                     className="py-3 px-6 bg-[#28595a] hover:bg-[#1e4445] text-white font-medium rounded-lg transition-colors flex items-center"
                   >
                     <RotateCcw className="mr-2 h-5 w-5" />
@@ -557,9 +639,7 @@ const PdfQuizGenerator = () => {
             <div className="border-t border-[#dbf0dd] p-4 bg-white">
               <div className="flex items-center justify-center space-x-3">
                 <div className="animate-spin rounded-full h-5 w-5 border-2 border-[#28595a] border-t-transparent"></div>
-                <span className="text-[#28595a]">
-                  {!file ? 'Processing PDF...' : !questions.length ? 'Analyzing content and generating questions...' : 'Loading...'}
-                </span>
+                <span className="text-[#28595a]">{loadingMessage}</span>
               </div>
             </div>
           )}
