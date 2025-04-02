@@ -9,7 +9,8 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const apiKey = process.env.GEMINI_API_KEY;
+// const apiKey = process.env.GEMINI_API_KEY;
+const apiKey = "AIzaSyDEjGf5mHgDZ2VSsbaVwOisZZ5wcvn6AVA";
 const genAI = new GoogleGenerativeAI(apiKey);
 const cors = require('cors');
 app.use(cors({
