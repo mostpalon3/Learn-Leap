@@ -21,8 +21,13 @@ import Leaderboard from "../Leaderboard";
 import CircularProgressChart from "../CircularProgressChart";
 import { useNavigate } from "react-router-dom";
 
+// Import the DetailedAnalytics component
+import DetailedAnalytics from "../DetailedAnalytics.jsx";
+
 const ProfileSection1 = ({ user }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  // Add a state to control when to show the detailed analytics
+  const [showDetailedAnalytics, setShowDetailedAnalytics] = useState(false);
   
   const schedule = {
     1: {
@@ -61,6 +66,12 @@ const ProfileSection1 = ({ user }) => {
     };
     return icons[iconName] || BookOpen;
   };
+
+  // If detailed analytics should be shown, render the component
+  if (showDetailedAnalytics) {
+    // return <DetailedAnalytics user={user} onBack={() => setShowDetailedAnalytics(false)} />;
+    navigate("/detailed-analytics");
+  }
 
   return (
     <div className="border-r-[0.1px] border-gray-300 w-[72%] p-[3dvw] pt-[4vh] h-screen overflow-y-auto overflow-x-hidden flex-shrink-0 scroll-bar scroll-smooth bg-[#f6fbf6]">
@@ -202,7 +213,10 @@ const ProfileSection1 = ({ user }) => {
             </div>
           </div>
           
-          <button className="mt-3 w-full py-2 text-[#28595a] text-sm font-medium flex items-center justify-center hover:text-[#ff8400] transition-colors">
+          <button 
+            className="mt-3 w-full py-2 text-[#28595a] text-sm font-medium flex items-center justify-center hover:text-[#ff8400] transition-colors"
+            onClick={() => setShowDetailedAnalytics(true)}
+          >
             View Detailed Analytics
             <ChevronRight size={14} className="ml-1" />
           </button>

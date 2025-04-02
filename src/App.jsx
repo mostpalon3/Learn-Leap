@@ -17,6 +17,7 @@ import CourseDetail from "./components/CourseDetail";
 import Chat from "./pages/Chat";
 import TopicDetail from "./components/TopicDetails";
 import PdfQuizGenerator from "./components/PdfQuizGenerator";
+import DetailedAnalytics from "./components/DetailedAnalytics";
 
 function App() {
   const navigate = useNavigate();
@@ -39,6 +40,7 @@ function App() {
           <Route path="/courses/introduction-to-react" element={<CourseDetail />} />
           <Route path="/topics/:topicId" element={<TopicDetail />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/detailed-analytics" element={<DetailedAnalytics />} />
           <Route path="/feed" element={<Feed />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/chat" element={<Chat />} />
