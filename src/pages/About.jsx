@@ -61,7 +61,7 @@ function About() {
             <div>
               <h2 className="text-3xl font-bold mb-6 text-[#28595a]">Our Story</h2>
               <p className="text-gray-700 mb-4">
-              Learn Leap was conceived for the 2025 AI-Humanity Hackathon, hosted by the IIF Society of NSUT. Our team united with a shared vision to revolutionize educational technology
+              Learn Leap was conceived for the 2025 AI4Humanity Hackathon, hosted by the IIF Society of NSUT. Our team united with a shared vision to revolutionize educational technology
               </p>
               <p className="text-gray-700 mb-4">
                 We identified that traditional online learning platforms often lack engagement and personalization, resulting in limited effectiveness. Our solution leverages AI technology to transform how students interact with educational content, especially focusing on converting static PDFs into interactive quizzes.
@@ -78,7 +78,7 @@ function About() {
                   className="w-full h-auto rounded-lg" 
                 />
                 <div className="absolute -bottom-5 -right-5 bg-[#28595a] text-white p-4 rounded-lg shadow-lg">
-                  <p className="font-bold">AI-Humanity Hackathon 2025</p>
+                  <p className="font-bold">AI4Humanity Hackathon 2025</p>
                 </div>
               </div>
             </div>
