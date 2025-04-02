@@ -19,7 +19,7 @@ function About() {
     },
     {
       name: "Sumit Sagar",
-      role: "Full Stack Developer & UI/UX Designer",
+      role: "Full Stack & GenAI Developer & UI/UX Designer",
       bio: "Expert in creating user-friendly interfaces and seamless user experiences.",
       image: sumitImage
     },
@@ -31,7 +31,7 @@ function About() {
     },
     {
       name: "Shivam Chauhan",
-      role: "AI/ML Developer",
+      role: "Mern Stack & AI/ML Developer",
       bio: "Focused on developing AI algorithms for personalized learning.",
       image: shivamImage
     }
