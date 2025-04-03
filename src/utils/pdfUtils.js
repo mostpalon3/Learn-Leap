@@ -1,5 +1,4 @@
-const url = "https://learn-leap-1.onrender.com" ;
-// const url = 'http://localhost:5001' ;
+const url = 'http://localhost:5001' ;
 /**
  * Extract text from a PDF file using backend service
  * 

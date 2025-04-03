@@ -13,8 +13,7 @@ export default function Chat() {
   const fileInputRef = useRef(null);
   const messagesEndRef = useRef(null);
 
-  const url = "https://learn-leap-2.onrender.com";
-  // const url = 'http://localhost:3000';
+  const url = 'http://localhost:3000';
 
   // Auto-scroll to bottom of messages
   useEffect(() => {
