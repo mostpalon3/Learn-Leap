@@ -8,7 +8,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 require('dotenv').config();
 
 // Initialize Google Generative AI
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -176,7 +176,7 @@ function analyzeContentComplexity(text) {
 async function analyzeContentForQuiz(content) {
   try {
     // Get Gemini model
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     
     // Create prompt for content analysis
     const prompt = `
